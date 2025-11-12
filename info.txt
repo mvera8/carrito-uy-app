@@ -1,0 +1,13 @@
+ npm run start
+
+
+https://www.unistyl.es/v3/start/introduction?plugin_version=chrome_4.0.13
+
+https://gluestack.io/ui/docs/components/all-components
+
+Ref code:
+https://www.youtube.com/watch?v=U23lNFm_J70
+
+Logos:
+https://logoteca.uy/
+https://react-svgr.com/
