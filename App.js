@@ -29,7 +29,7 @@ function AppNavigator() {
             >
               <Ionicons name="cart-outline" size={24} color="black" />
               {cart.length > 0 && (
-                <Text style={{ marginLeft: 5, fontSize: 16 }}>
+                <Text>
                   {cart.length}
                 </Text>
               )}
@@ -50,7 +50,7 @@ export default function App() {
     <SafeAreaProvider>
       <CartProvider>
         <NavigationContainer>
-          <StatusBar style="light" />
+          <StatusBar style="dark" />
           <AppNavigator />
         </NavigationContainer>
       </CartProvider>

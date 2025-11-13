@@ -1,0 +1,23 @@
+name: scrape-prices
+
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install axios cheerio
+      - run: node scrape.js
+      - run: |
+          git config user.name "bot"
+          git config user.email "bot@example.com"
+          git add prices.json
+          git commit -m "update prices [skip ci]" || echo "no changes"
+          git push

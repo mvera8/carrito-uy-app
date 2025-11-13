@@ -1,4 +1,8 @@
- npm run start
+Run developer:
+npm run start
+
+Run scraper:
+node scrape.js
 
 
 https://www.unistyl.es/v3/start/introduction?plugin_version=chrome_4.0.13
@@ -7,6 +11,7 @@ https://gluestack.io/ui/docs/components/all-components
 
 Ref code:
 https://www.youtube.com/watch?v=U23lNFm_J70
+https://www.youtube.com/watch?v=zuFh9lfb4HY
 
 Logos:
 https://logoteca.uy/

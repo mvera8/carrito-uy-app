@@ -1,63 +1,76 @@
-import { View, Text, FlatList, TouchableOpacity, Linking, Switch } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, Switch } from "react-native";
 import { useState, useMemo } from "react";
 import { useCart } from "../context/CartContext";
-import { ProductSearch } from "../components/ProductSearch";
 import { SupermarketCard } from "../components/SupermarketCard";
 import { SUPERMARKETS } from "../data/supermarkets";
-import {
-  SafeAreaView,
-} from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
+import PRICES from "../data/prices.json";
 
-export default function ProductScreen({ route, navigation }) {
+export default function ProductScreen({ route }) {
   const { product } = route.params;
   const { addToCart } = useCart();
 
   const [useDiscount, setUseDiscount] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  // Calculamos precios, convirtiendo promo si viene como string "653,65"
-  const computedBrands = useMemo(() => {
-    return product.brands
-      .filter((b) => b.price) // Descartamos entries vacíos como Disco en el repelente
-      .map((item) => {
-        const numericPromo = item.promo
-          ? typeof item.promo === "string"
-            ? Number(item.promo.replace(",", "."))
-            : item.promo
-          : null;
+  // Intentamos buscar el producto por su id, slug o nombre
+  const productData =
+    PRICES.data[product?.id] ||
+    PRICES.data[product?.slug] ||
+    Object.entries(PRICES.data).find(([key, item]) =>
+      product?.name?.toLowerCase().includes(item.name.toLowerCase())
+    )?.[1];
 
-        const finalPrice = useDiscount && numericPromo ? numericPromo : item.price;
-        const potentialSavings = numericPromo ? item.price - numericPromo : 0;
+  // Si no se encuentra, mostramos mensaje
+  if (!productData)
+    return (
+      <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>No se encontró el producto.</Text>
+      </SafeAreaView>
+    );
 
-        // Buscar el supermercado correspondiente
+  // Convertimos los precios del producto en un array usable
+  const computedMarkets = useMemo(() => {
+    return Object.entries(productData.prices)
+      .filter(([_, price]) => price && !isNaN(price))
+      .map(([market, price]) => {
         const supermarket = SUPERMARKETS.find(
-          (s) => s.id === item.market || s.name.toLowerCase() === item.market.toLowerCase()
+          (s) => s.id === market || s.name.toLowerCase() === market.toLowerCase()
         );
 
-        return { ...item, finalPrice, numericPromo, potentialSavings, supermarket };
+        return {
+          market,
+          price: Number(price),
+          finalPrice: Number(price),
+          supermarket,
+        };
       });
-  }, [product.brands, useDiscount]);
+  }, [productData]);
 
-  // Detectar el precio más caro
+  // Detectar el precio más alto (para marcarlo)
   const maxPrice = useMemo(() => {
-    return Math.max(...computedBrands.map((b) => b.finalPrice));
-  }, [computedBrands]);
+    return Math.max(...computedMarkets.map((b) => b.finalPrice));
+  }, [computedMarkets]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, paddingBottom: 20 }}>
+      <View style={{ flex: 1 }}>
         <FlatList
-          contentContainerStyle={{ padding: 20, paddingBottom: 120 }}
-          data={computedBrands}
+          contentContainerStyle={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 120 }}
+          data={computedMarkets}
           keyExtractor={(item) => item.market}
           ListHeaderComponent={
             <View>
-              <ProductSearch navigation={navigation} />
-              <Text style={{ fontSize: 22, marginBottom: 10 }}>{product.name}</Text>
-              <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                <Switch value={useDiscount} onValueChange={setUseDiscount} />
-                <Text style={{ marginLeft: 10, fontSize: 16 }}>Usar descuento</Text>
-              </View>
+              <Text style={{ fontSize: 22, marginBottom: 20 }}>{productData.name}</Text>
+
+              {/* Si el producto tiene descuento, permitimos activar/desactivar */
+                productData.discountPrice && (
+                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                    <Switch value={useDiscount} onValueChange={setUseDiscount} />
+                    <Text style={{ marginLeft: 10, fontSize: 16 }}>Usar descuento</Text>
+                  </View>
+                ) 
+              }
             </View>
           }
           renderItem={({ item }) => {
@@ -67,30 +80,21 @@ export default function ProductScreen({ route, navigation }) {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  backgroundColor: "red",
+                  justifyContent: "space-between",
+                  backgroundColor: "#f9f9f9",
                   borderRadius: 12,
                   padding: 10,
                   marginBottom: 10,
                 }}
               >
-                {/* Icono/Logo del supermercado */}
+                {/* Logo del supermercado */}
                 {item.supermarket && (
-                  <View>
+                  <View style={{ marginRight: 10 }}>
                     <SupermarketCard card={item.supermarket} />
                   </View>
                 )}
 
-                {/* Contenido central */}
-                <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 16, fontWeight: "600", marginBottom: 2 }}>
-                    {item.market}
-                  </Text>
-                  <TouchableOpacity onPress={() => Linking.openURL(item.url)}>
-                    <Text style={{ fontSize: 13, color: "#666" }}>Ver en sitio →</Text>
-                  </TouchableOpacity>
-                </View>
-
-                {/* Precio a la derecha */}
+                {/* Precio */}
                 <View style={{ alignItems: "flex-end" }}>
                   <Text
                     style={{
@@ -101,17 +105,6 @@ export default function ProductScreen({ route, navigation }) {
                   >
                     ${item.finalPrice}
                   </Text>
-
-                  {/* Mostrar descuento o precio anterior */}
-                  {item.numericPromo && useDiscount ? (
-                    <Text style={{ fontSize: 13, color: "#999", textDecorationLine: "line-through" }}>
-                      ${item.price}
-                    </Text>
-                  ) : item.numericPromo && !useDiscount ? (
-                    <Text style={{ fontSize: 13, color: "green" }}>
-                      -${item.potentialSavings.toFixed(0)}
-                    </Text>
-                  ) : null}
                 </View>
               </View>
             );
@@ -126,7 +119,8 @@ export default function ProductScreen({ route, navigation }) {
           left: 0,
           right: 0,
           bottom: 0,
-          padding: 16,
+          padding: 20,
+          paddingBottom: 32,
           backgroundColor: "white",
           borderTopWidth: 1,
           borderColor: "#ddd",
@@ -137,7 +131,7 @@ export default function ProductScreen({ route, navigation }) {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
-            marginBottom: 10,
+            marginBottom: 20,
           }}
         >
           <TouchableOpacity
@@ -149,10 +143,10 @@ export default function ProductScreen({ route, navigation }) {
               marginHorizontal: 10,
             }}
           >
-            <Text style={{ fontSize: 20 }}>−</Text>
+            <Text>−</Text>
           </TouchableOpacity>
 
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>{quantity}</Text>
+          <Text>{quantity}</Text>
 
           <TouchableOpacity
             onPress={() => setQuantity(quantity + 1)}
@@ -163,12 +157,12 @@ export default function ProductScreen({ route, navigation }) {
               marginHorizontal: 10,
             }}
           >
-            <Text style={{ fontSize: 20 }}>+</Text>
+            <Text>+</Text>
           </TouchableOpacity>
         </View>
 
         <TouchableOpacity
-          onPress={() => addToCart(product, quantity)}
+          onPress={() => addToCart(productData, quantity)}
           style={{
             backgroundColor: "#000",
             padding: 14,

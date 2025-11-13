@@ -1,0 +1,37 @@
+{
+  "timestamp": "2025-11-13T17:39:00.449Z",
+  "data": {
+    "coca-15": {
+      "name": "Coca-Cola Original 1.5L",
+      "prices": {
+        "tata": 145,
+        "eldorado": 145,
+        "devoto": 145,
+        "tiendainglesa": 147,
+        "geant": 145,
+        "disco": 145
+      }
+    },
+    "repelente-off-extra": {
+      "name": "Repelente para Mosquitos OFF! Extra Duración Aerosol 290 cc",
+      "prices": {
+        "tiendainglesa": 780,
+        "eldorado": 653.65,
+        "devoto": 730,
+        "tata": 779,
+        "geant": 730
+      }
+    },
+    "yerba-canarias-especial-1": {
+      "name": "Yerba CANARIAS Edición Especial 1Kg",
+      "prices": {
+        "tiendainglesa": 206,
+        "elclon": 199
+      }
+    },
+    "test": {
+      "name": "Test",
+      "prices": {}
+    }
+  }
+}
