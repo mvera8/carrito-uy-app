@@ -1,16 +1,24 @@
 import { useState } from "react";
 import { View, TextInput, FlatList, Text, TouchableOpacity } from "react-native";
-import { PRODUCTS } from "../data/products";
+import prices from "../data/prices.json";
 
 export function ProductSearch({ navigation, onSelect }) {
   const [search, setSearch] = useState("");
 
+  // Transformamos el JSON a una lista de productos
+  const items = Object.entries(prices.data).map(([id, item]) => ({
+    id,
+    name: item.name,
+    prices: item.prices,
+  }));
+
+  // Filtrado por nombre
   const filtered =
     search.length > 0
-      ? PRODUCTS.filter((p) =>
-        p.name.toLowerCase().includes(search.toLowerCase())
-      )
-      : [];
+      ? items.filter((p) =>
+          p.name.toLowerCase().includes(search.toLowerCase())
+        )
+      : items;
 
   function handleSelect(product) {
     setSearch("");
@@ -20,23 +28,25 @@ export function ProductSearch({ navigation, onSelect }) {
 
   return (
     <View style={{ marginBottom: 10, padding: 20 }}>
-			<Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 10 }}>Buscar Productos</Text>
-      <TextInput
-				placeholder="Buscar producto..."
-				value={search}
-				onChangeText={setSearch}
-				autoCapitalize="none"
-				placeholderTextColor="#666"
-				style={{
-					borderWidth: 1,
-					borderRadius: 8,
-					padding: 10,
-					backgroundColor: "white",
-					marginBottom: 12,
-				}}
-			/>
+      <Text style={{ fontSize: 22, fontWeight: "bold", marginBottom: 10 }}>
+        Buscar Productos
+      </Text>
 
-      {/* Lista compacta (solo aparece si hay búsqueda) */}
+      <TextInput
+        placeholder="Buscar producto..."
+        value={search}
+        onChangeText={setSearch}
+        autoCapitalize="none"
+        placeholderTextColor="#666"
+        style={{
+          borderWidth: 1,
+          borderRadius: 8,
+          padding: 10,
+          backgroundColor: "white",
+          marginBottom: 12,
+        }}
+      />
+
       {filtered.length > 0 && (
         <View
           style={{
@@ -52,22 +62,30 @@ export function ProductSearch({ navigation, onSelect }) {
             keyboardShouldPersistTaps="handled"
             data={filtered}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => handleSelect(item)}
-                style={{
-                  paddingVertical: 10,
-                  paddingHorizontal: 12,
-                  borderBottomWidth: 1,
-                  borderBottomColor: "#eee",
-                }}
-              >
-                <Text style={{ fontSize: 16 }}>{item.name}</Text>
-                <Text style={{ fontSize: 14, color: "gray" }}>
-                  Desde ${Math.min(...item.brands.map((b) => b.price))}
-                </Text>
-              </TouchableOpacity>
-            )}
+            renderItem={({ item }) => {
+              const pricesList = Object.values(item.prices);
+              const minPrice =
+                pricesList.length > 0
+                  ? Math.min(...pricesList)
+                  : "N/A";
+
+              return (
+                <TouchableOpacity
+                  onPress={() => handleSelect(item)}
+                  style={{
+                    paddingVertical: 10,
+                    paddingHorizontal: 12,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#eee",
+                  }}
+                >
+                  <Text style={{ fontSize: 16 }}>{item.name}</Text>
+                  <Text style={{ fontSize: 14, color: "gray" }}>
+                    Desde ${minPrice}
+                  </Text>
+                </TouchableOpacity>
+              );
+            }}
           />
         </View>
       )}

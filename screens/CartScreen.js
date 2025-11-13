@@ -1,72 +1,62 @@
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useCart } from "../context/CartContext";
+import { SafeAreaView } from "react-native-safe-area-context";
+import prices from "../data/prices.json"; // o traerlo por fetch
 
 export default function CartScreen() {
   const { cart, removeFromCart, updateQuantity } = useCart();
 
   if (cart.length === 0) {
     return (
-      <View style={{ flex: 1, padding: 20 }}>
+      <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>El carrito está vacío 😢</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
-  // Obtener todos los supermercados presentes en algún item
+  // mercados presentes en los precios
   const markets = Array.from(
-    new Set(cart.flatMap((product) => product.brands.map((b) => b.market)))
+    new Set(
+      Object.values(prices.data).flatMap((p) => Object.keys(p.prices))
+    )
   );
 
-  // Calcular total por supermercado
   const totals = markets.map((market) => {
     let total = 0;
     let missing = false;
 
     cart.forEach((product) => {
-      const found = product.brands.find((b) => b.market === market);
+      // Buscar los datos del producto dentro de prices.json
+      const productData =
+        prices.data[product.id] ||
+        Object.values(prices.data).find(
+          (p) => p.name.toLowerCase() === product.name.toLowerCase()
+        );
 
-      if (!found) {
+      if (!productData) {
         missing = true;
         return;
       }
 
-      // Tomar promo si existe, sino price
-      let price = found.promo ?? found.price;
+      // Buscar el precio del supermercado
+      const price = productData.prices[market];
 
-      // Si no hay ninguno → falta el producto
-      if (price === undefined || price === null) {
+      if (price === undefined || price === null || isNaN(Number(price))) {
         missing = true;
         return;
       }
 
-      // Si viene como string "653,65" convertir bien
-      if (typeof price === "string") {
-        price = parseFloat(price.replace(",", "."));
-      }
-
-      // Si después de convertir sigue siendo NaN → producto inválido
-      if (isNaN(price)) {
-        missing = true;
-        return;
-      }
-
-      total += price * product.quantity;
+      total += Number(price) * product.quantity;
     });
 
     return { market, total, missing };
   });
 
-  // Más barato con todos los productos disponibles
   const completeMarkets = totals.filter((t) => !t.missing);
   const bestComplete =
     completeMarkets.length > 0
       ? completeMarkets.reduce((a, b) => (a.total < b.total ? a : b))
       : null;
-
-  // El más barato entre los completos
-  let bestOverall = completeMarkets.length
-    ? completeMarkets.reduce((a, b) => (a.total < b.total ? a : b))
-    : null;
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
@@ -74,7 +64,6 @@ export default function CartScreen() {
         Tu carrito ({cart.length} productos únicos)
       </Text>
 
-      {/* Lista de productos */}
       <FlatList
         data={cart}
         keyExtractor={(item) => item.id}
@@ -89,7 +78,6 @@ export default function CartScreen() {
             <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.name}</Text>
             <Text style={{ marginTop: 4 }}>Cantidad: {item.quantity}</Text>
 
-            {/* Controles de cantidad */}
             <View style={{ flexDirection: "row", marginTop: 6 }}>
               <TouchableOpacity
                 onPress={() =>
@@ -141,14 +129,11 @@ export default function CartScreen() {
         <Text key={t.market} style={{ marginVertical: 6, fontSize: 16 }}>
           {t.market}: ${t.total.toFixed(0)}
           {t.missing && " (faltan productos)"}
-
-          {/* Si es el más barato con todo */}
           {bestComplete && bestComplete.market === t.market && !t.missing
             ? " ← ⭐ Más barato con todo"
             : ""}
         </Text>
       ))}
-
     </View>
   );
 }
