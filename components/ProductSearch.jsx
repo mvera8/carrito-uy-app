@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { View, TextInput, FlatList, Text, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 import prices from "../data/prices.json";
 
-export function ProductSearch({ navigation, onSelect }) {
+export function ProductSearch({ onSelect }) {
+	const router = useRouter();
   const [search, setSearch] = useState("");
 
   // Transformamos el JSON a una lista de productos
@@ -23,7 +25,10 @@ export function ProductSearch({ navigation, onSelect }) {
   function handleSelect(product) {
     setSearch("");
     if (onSelect) onSelect(product);
-    navigation.navigate("Product", { product });
+    router.push({
+			pathname: "/product",
+			params: { product: JSON.stringify(product) }
+		});
   }
 
   return (

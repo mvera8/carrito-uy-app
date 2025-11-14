@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-11-13T17:39:00.449Z",
+  "timestamp": "2025-11-14T14:16:48.211Z",
   "data": {
-    "coca-15": {
-      "name": "Coca-Cola Original 1.5L",
+    "coca-15-l": {
+      "name": "Coca-Cola Original 1.5l",
       "prices": {
         "tata": 145,
         "eldorado": 145,
@@ -12,8 +12,8 @@
         "disco": 145
       }
     },
-    "repelente-off-extra": {
-      "name": "Repelente para Mosquitos OFF! Extra Duración Aerosol 290 cc",
+    "repelente-off-extra-290-cc": {
+      "name": "Repelente para Mosquitos OFF! Extra Duración Aerosol 290cc",
       "prices": {
         "tiendainglesa": 780,
         "eldorado": 653.65,
@@ -23,14 +23,35 @@
       }
     },
     "yerba-canarias-especial-1": {
-      "name": "Yerba CANARIAS Edición Especial 1Kg",
+      "name": "Yerba CANARIAS Edición Especial 1kg",
       "prices": {
         "tiendainglesa": 206,
         "elclon": 199
       }
     },
-    "test": {
-      "name": "Test",
+    "huevos-colorados-prodhin-x-15-un": {
+      "name": "Huevo colorados PRODHIN 15un",
+      "prices": {
+        "tiendainglesa": 259,
+        "tata": 249,
+        "eldorado": 249,
+        "devoto": 259,
+        "geant": 259,
+        "disco": 259
+      }
+    },
+    "galletas-oreo-119-g": {
+      "name": "Galletas Bañadas Oreo Chocolate 119g",
+      "prices": {
+        "tata": 189,
+        "tiendainglesa": 118,
+        "devoto": 190,
+        "geant": 187,
+        "disco": 190
+      }
+    },
+    "": {
+      "name": "",
       "prices": {}
     }
   }
