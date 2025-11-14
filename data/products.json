@@ -1,7 +1,7 @@
 [
 	{
-		"id": "coca-15",
-		"name": "Coca-Cola Original 1.5L",
+		"id": "coca-15-l",
+		"name": "Coca-Cola Original 1.5l",
 		"urls": [
 			"https://www.tata.com.uy/coca-cola-original-1-5l-212/p",
 			"https://www.eldorado.com.uy/refresco-coca-cola-descartable-1-5-l/p",
@@ -12,8 +12,8 @@
 		]
 	},
 	{
-		"id": "repelente-off-extra",
-		"name": "Repelente para Mosquitos OFF! Extra Duración Aerosol 290 cc",
+		"id": "repelente-off-extra-290-cc",
+		"name": "Repelente para Mosquitos OFF! Extra Duración Aerosol 290cc",
 		"urls": [
 			"https://www.tiendainglesa.com.uy/supermercado/repelente-para-mosquitos-off-extra-duracion-aerosol-290-cc.producto?407563",
 			"https://www.eldorado.com.uy/repelente-off-extra-duracion-bonus-aerosol-290ml/p",
@@ -24,10 +24,33 @@
 	},
 	{
 		"id": "yerba-canarias-especial-1",
-		"name": "Yerba CANARIAS Edición Especial 1Kg",
+		"name": "Yerba CANARIAS Edición Especial 1kg",
 		"urls": [
 			"https://www.tiendainglesa.com.uy/supermercado/yerba-canarias-edicion-especial-1kg.producto?217077",
 			"https://www.elclon.com.uy/catalogo/yerba-canarias-edicion-especial-1k_19929_0"
+		]
+	},
+	{
+		"id": "huevos-colorados-prodhin-x-15-un",
+		"name": "Huevo colorados PRODHIN 15un",
+		"urls": [
+			"https://www.tiendainglesa.com.uy/supermercado/pack-huevos-colorados-prodhin-x-15-unidades.producto?5038",
+			"https://www.tata.com.uy/huevo-marron-prodhin-x15-2719/p",
+			"https://www.eldorado.com.uy/huevos-prodhin-marron-15un/p",
+			"https://www.devoto.com.uy/huevo-color-prodhin-15-un-220002/p",
+			"https://www.geant.com.uy/huevo-color-prodhin-15-un-220002/p",
+			"https://www.disco.com.uy/huevo-color-prodhin-15-un-220002/p"
+		]
+	},
+	{
+		"id": "galletas-oreo-119-g",
+		"name": "Galletas Bañadas Oreo Chocolate 119g",
+		"urls": [
+			"https://www.tata.com.uy/galletas-ba%C3%B1ada-oreo-chocolate-119-g-780/p",
+			"https://www.tiendainglesa.com.uy/supermercado/galleta-oreo-banada-119g.producto?404890",
+			"https://www.devoto.com.uy/galletitas-oreo-banadas-chocolate-119-g-662155/p",
+			"https://www.geant.com.uy/galletitas-oreo-banadas-chocolate-119-g-662155/p",
+			"https://www.disco.com.uy/galletitas-oreo-banadas-chocolate-119-g-662155/p"
 		]
 	},
 	{

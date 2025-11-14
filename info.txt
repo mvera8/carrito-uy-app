@@ -4,6 +4,11 @@ npm run start
 Run scraper:
 node scrape.js
 
+Limpiar:
+rm -rf node_modules
+rm package-lock.json
+npm install
+
 
 https://www.unistyl.es/v3/start/introduction?plugin_version=chrome_4.0.13
 
@@ -12,7 +17,17 @@ https://gluestack.io/ui/docs/components/all-components
 Ref code:
 https://www.youtube.com/watch?v=U23lNFm_J70
 https://www.youtube.com/watch?v=zuFh9lfb4HY
+https://www.youtube.com/watch?v=G1XiiXTQHSE
 
 Logos:
 https://logoteca.uy/
 https://react-svgr.com/
+
+Supermercados:
+https://www.tata.com.uy/
+https://www.tiendainglesa.com.uy/
+https://www.eldorado.com.uy/
+https://www.devoto.com.uy/
+https://www.geant.com.uy/
+https://www.disco.com.uy/
+https://www.elclon.com.uy/
