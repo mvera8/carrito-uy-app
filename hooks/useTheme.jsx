@@ -1,4 +1,4 @@
-import { useColorScheme } from "react-native";
+import { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const lightColors = {
@@ -57,11 +57,38 @@ const darkColors = {
   statusBarStyle: "light-content",
 };
 
-const ThemeContext = React.createContext(lightColors);
+const ThemeContext = createContext(undefined);
+
+export const ThemeProvider = ({ children }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    AsyncStorage.getItem("darkMode").then((value) => {
+      if (value) setIsDarkMode(JSON.parse(value));
+    });
+  }, []);
+
+  const toggleDarkMode = async () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    await AsyncStorage.setItem("darkMode", JSON.stringify(newMode));
+  };
+
+  const colors = isDarkMode ? darkColors : lightColors;
+
+  return (
+    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode, colors }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
 
 const useTheme = () => {
-	const colorScheme = useColorScheme();
-	return colorScheme === "dark" ? darkColors : lightColors;
-}
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
+  return context;
+};
 
-export default useTheme
+export default useTheme;

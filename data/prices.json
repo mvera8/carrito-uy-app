@@ -1,6 +1,26 @@
 {
-  "timestamp": "2025-11-14T14:16:48.211Z",
+  "timestamp": "2025-11-18T19:06:17.278Z",
   "data": {
+    "arroz-blanco-saman-1-kg": {
+      "name": "Arroz Blanco SAMAN 1kg",
+      "prices": {
+        "tata": 83,
+        "tiendainglesa": 85,
+        "devoto": 59.2,
+        "geant": 59.2,
+        "disco": 59.2,
+        "elclon": 69
+      }
+    },
+    "arroz-blanco-saman-5-kg": {
+      "name": "Arroz Blanco SAMAN 5kg",
+      "prices": {
+        "tata": 308,
+        "geant": 309,
+        "disco": 309,
+        "elclon": 225
+      }
+    },
     "coca-15-l": {
       "name": "Coca-Cola Original 1.5l",
       "prices": {
@@ -12,21 +32,25 @@
         "disco": 145
       }
     },
-    "repelente-off-extra-290-cc": {
-      "name": "Repelente para Mosquitos OFF! Extra Duración Aerosol 290cc",
+    "frankfurters-schneck-8-un": {
+      "name": "Frankfurters Cortos SCHNECK 8 Unidades",
       "prices": {
-        "tiendainglesa": 780,
-        "eldorado": 653.65,
-        "devoto": 730,
-        "tata": 779,
-        "geant": 730
+        "tata": 270,
+        "tiendainglesa": 290,
+        "eldorado": 255,
+        "devoto": 280,
+        "geant": 280,
+        "disco": 280
       }
     },
-    "yerba-canarias-especial-1": {
-      "name": "Yerba CANARIAS Edición Especial 1kg",
+    "galletas-oreo-119-g": {
+      "name": "Galletas Bañadas Oreo Chocolate 119g",
       "prices": {
-        "tiendainglesa": 206,
-        "elclon": 199
+        "tata": 151,
+        "tiendainglesa": 196,
+        "devoto": 190,
+        "geant": 187,
+        "disco": 190
       }
     },
     "huevos-colorados-prodhin-x-15-un": {
@@ -40,14 +64,74 @@
         "disco": 259
       }
     },
-    "galletas-oreo-119-g": {
-      "name": "Galletas Bañadas Oreo Chocolate 119g",
+    "leche-descremada-conaprole-1-l": {
+      "name": "Lecha Descremada CONAPROLE 1l",
       "prices": {
-        "tata": 189,
-        "tiendainglesa": 118,
-        "devoto": 190,
-        "geant": 187,
-        "disco": 190
+        "disco": 44.17,
+        "geant": 44.17,
+        "devoto": 44.17,
+        "eldorado": 44.2,
+        "tiendainglesa": 44.2,
+        "tata": 44
+      }
+    },
+    "pan-lacteado-bimbo": {
+      "name": "Pan lacteado BIMBO",
+      "prices": {
+        "disco": 131,
+        "geant": 131,
+        "devoto": 131,
+        "eldorado": 134.9,
+        "tiendainglesa": 136,
+        "tata": 135
+      }
+    },
+    "pan-viena-sorchantes-viena-8un": {
+      "name": "Pan Viena LOS SORCHANTES 8un",
+      "prices": {
+        "tata": 105,
+        "tiendainglesa": 129,
+        "eldorado": 119.9,
+        "devoto": 109,
+        "geant": 109,
+        "disco": 109
+      }
+    },
+    "pepsi-cola-500-ml": {
+      "name": "Refresco PEPSI Cola 500 ml",
+      "prices": {
+        "tata": 68,
+        "tiendainglesa": 64,
+        "eldorado": 60,
+        "devoto": 60,
+        "geant": 60,
+        "disco": 60
+      }
+    },
+    "repelente-off-extra-290-cc": {
+      "name": "Repelente para Mosquitos OFF! Extra Duración Aerosol 290cc",
+      "prices": {
+        "tiendainglesa": 780,
+        "eldorado": 769,
+        "devoto": 730,
+        "tata": 779,
+        "geant": 730
+      }
+    },
+    "suprema-pollo-1-kg": {
+      "name": "Suprema de Pollo 1Kg",
+      "prices": {
+        "tiendainglesa": 719,
+        "devoto": 675,
+        "geant": 675,
+        "disco": 675
+      }
+    },
+    "yerba-canarias-especial-1": {
+      "name": "Yerba CANARIAS Edición Especial 1kg",
+      "prices": {
+        "tiendainglesa": 206,
+        "elclon": 199
       }
     },
     "": {
