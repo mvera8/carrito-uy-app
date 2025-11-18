@@ -3,7 +3,8 @@ import { View, StyleSheet, Text, Image } from "react-native";
 export function SupermarketCard({ card }) {
   return (
 		<View key={card.id} style={styles.card_template}>
-      <Image  
+      <Image
+				alt={card.name}
         style={styles.card_image}
         source={card.image}
     	/>
@@ -19,13 +20,13 @@ const styles = StyleSheet.create({
     width: 120,
 		overflow: "hidden",
 		marginRight: 20,
-    height: 100,
+    height: 70,
 		borderRadius : 10,
   },
   card_image: {
     width: 120,
 		resizeMode: "contain",
-    height: 100,
+    height: 70,
 		backgroundColor: "white"
   },
   text_container:{

@@ -1,7 +1,7 @@
-import { useTheme } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { useCart } from '../../context/CartContext';
+import { useCart } from "../../hooks/useCart";
+import useTheme from "../../hooks/useTheme";
 
 const TabsLayout = () => {
   const { colors } = useTheme();
@@ -19,8 +19,13 @@ const TabsLayout = () => {
 			icon: "cart",
 		},
 		{
-			name: "list",
-			title: "Lista",
+			name: "scan",
+			title: "",
+			icon: "scan",
+		},
+		{
+			name: "lists",
+			title: "Listas",
 			icon: "list",
 		},
 		{
@@ -39,12 +44,12 @@ const TabsLayout = () => {
           backgroundColor: colors.surface,
           borderTopWidth: 1,
           borderTopColor: colors.border,
-          height: 90,
-          paddingBottom: 30,
-          paddingTop: 10,
+          height: 85,
+          paddingBottom: 20,
+          paddingTop: 5,
         },
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: "600",
         },
         headerShown: false,
@@ -56,19 +61,37 @@ const TabsLayout = () => {
 					name={tab.name}
 					options={{
 						title: tab.title,
-						tabBarIcon: ({ color, size }) => (
-							<Ionicons name={tab.icon} size={size} color={color} />
-						),
+						tabBarIcon: ({ color, size, focused }) => {
+							// 👇 Caso especial para la tab "scan"
+							if (tab.name === "scan") {
+								return (
+									<Ionicons
+										name={tab.icon}
+										size={size}
+										style={{
+											backgroundColor: colors.primary,
+											borderWidth: 5,
+											borderColor: "red",
+											borderRadius: 999,
+											color: "white",
+											shadowOffset: { width: 0, height: 3 },
+                			transform: [{ translateY: -20 }],
+											width: 70,
+											height: 70,
+											textAlign: "center",
+											lineHeight: 60,
+											fontSize: 35,
+										}}
+									/>
+								);
+							}
+
+							// Todas las otras tabs normales
+							return <Ionicons name={tab.icon} size={size} color={color} />;
+						},
 					}}
 				/>
 			))}
-
-      <Tabs.Screen
-        name="product"
-        options={{
-          href: null,
-        }}
-      />
     </Tabs>
   );
 };
