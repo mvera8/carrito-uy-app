@@ -1,8 +1,8 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native'
 import useTheme from '../../hooks/useTheme';
 
 export default function Settings() {
-	const { toggleDarkMode, colors } = useTheme();
+	const { isDarkMode, toggleDarkMode, colors } = useTheme();
 
 	const styles = StyleSheet.create({
     container: {
@@ -11,25 +11,25 @@ export default function Settings() {
       alignItems: "center",
       backgroundColor: colors.bg,
     },
-    text: {
+		text: {
       color: colors.text,
     },
   });
 	
 	return (
 		<View style={styles.container}>
-			<Text style={styles.text}>settings</Text>
-			<TouchableOpacity
-				style={{
-					backgroundColor: "#000",
-					padding: 14,
-					borderRadius: 8,
-					alignItems: "center",
-					margin: 20,
-				}}
-				onPress={() => toggleDarkMode()}>
-				<Text style={styles.text}>Toggle Dark Mode</Text>
-			</TouchableOpacity>
+			<Text>settings</Text>
+
+			{/* DARK MODE */}
+      <View>
+        <Text>Dark Mode</Text>
+        <Switch
+          value={isDarkMode}
+          onValueChange={toggleDarkMode}
+          thumbColor={"#fff"}
+          trackColor={{ false: colors.border, true: colors.primary }}
+        />
+      </View>
 		</View>
 	)
 }

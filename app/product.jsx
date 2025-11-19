@@ -3,11 +3,8 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Switch,
-  Modal,
-  Animated,
 } from "react-native";
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SupermarketCard } from "../components/SupermarketCard";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,6 +13,7 @@ import { SUPERMARKETS } from "../data/supermarkets";
 import PRICES from "../data/prices.json";
 import { AppButton } from "../components/AppButton";
 import { AppIcon } from "../components/AppIcon";
+import { AppDrawer } from "../components/AppDrawer";
 
 export default function Product() {
   const router = useRouter();
@@ -33,29 +31,8 @@ export default function Product() {
   // ------------------ CART ------------------
   const { addToCart } = useCart();
 
-  const [useDiscount, setUseDiscount] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [showDrawer, setShowDrawer] = useState(false);
-
-  // Drawer animation
-  const slideAnim = useRef(new Animated.Value(300)).current;
-
-  useEffect(() => {
-    if (showDrawer) {
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        useNativeDriver: true,
-        tension: 65,
-        friction: 11,
-      }).start();
-    } else {
-      Animated.timing(slideAnim, {
-        toValue: 300,
-        duration: 250,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [showDrawer]);
 
   // ------------------ MATCH PRODUCT ------------------
 
@@ -285,80 +262,24 @@ export default function Product() {
         </View>
       </View>
 
-      {/* ------------------ DRAWER ------------------ */}
-      <Modal
-        visible={showDrawer}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setShowDrawer(false)}
-      >
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={() => setShowDrawer(false)}
-          style={{
-            flex: 1,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Animated.View
-            style={{
-              backgroundColor: "white",
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-              padding: 20,
-              paddingBottom: 40,
-              transform: [{ translateY: slideAnim }],
-            }}
-            onStartShouldSetResponder={() => true}
-          >
-            <View
-              style={{
-                width: 40,
-                height: 4,
-                backgroundColor: "#ddd",
-                borderRadius: 2,
-                alignSelf: "center",
-                marginBottom: 20,
-              }}
-            />
+      <AppDrawer visible={showDrawer} onClose={() => setShowDrawer(false)}>
+				<View style={{ alignItems: "center", marginBottom: 24 }}>
+					<AppIcon icon="checkmark-outline" />
+					<Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 4 }}>
+						Producto agregado
+					</Text>
+					<Text style={{ fontSize: 14, color: "#666" }}>
+						{quantity} x {productEntry.name}
+					</Text>
+				</View>
 
-            <View
-              style={{
-                alignItems: "center",
-                marginBottom: 24,
-              }}
-            >
-							<AppIcon icon="checkmark-outline" />
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  marginBottom: 4,
-                }}
-              >
-                Producto agregado
-              </Text>
-              <Text
-                style={{ fontSize: 14, color: "#666" }}
-              >
-                {quantity} x {productEntry.name}
-              </Text>
-            </View>
-
-						<AppButton 
-							pressFunction={handleGoToCart} 
-							text="Ver carrito" 
-						/>
-
-						<AppButton 
-							pressFunction={handleContinueShopping} 
-							text="Seguir comprando"
-							variant="light"
-						/>
-          </Animated.View>
-        </TouchableOpacity>
-      </Modal>
+				<AppButton pressFunction={handleGoToCart} text="Ver carrito" />
+				<AppButton
+					pressFunction={handleContinueShopping}
+					text="Seguir comprando"
+					variant="light"
+				/>
+			</AppDrawer>
     </SafeAreaView>
   );
 }
