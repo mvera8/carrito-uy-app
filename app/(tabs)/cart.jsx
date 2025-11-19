@@ -1,11 +1,16 @@
+import { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { useCart } from '../../hooks/useCart';
+import { AppButton } from '../../components/AppButton';
 import useTheme from '../../hooks/useTheme';
 import PRICES from '../../data/prices.json';
+import { AppDrawer } from '../../components/AppDrawer';
 
 export default function Cart() {
 	const { colors } = useTheme();
 	const { cart, removeFromCart, updateQuantity } = useCart();
+
+	const [showDrawer, setShowDrawer] = useState(false);
 	
 	const styles = StyleSheet.create({
     container: {
@@ -76,7 +81,15 @@ export default function Cart() {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.text}>cart</Text>
+			{totals.map((t) => (
+				<Text key={t.market} style={{ marginVertical: 6, fontSize: 16 }}>
+					{t.market}: ${t.total.toFixed(0)}
+					{t.missing && " (faltan productos)"}
+					{bestComplete && bestComplete.market === t.market && !t.missing
+						? " ← ⭐ Más barato con todo"
+						: ""}
+				</Text>
+			))}
 
 			<Text style={{ fontSize: 20, marginBottom: 15 }}>
         Tu carrito ({cart.length} productos únicos)
@@ -141,17 +154,21 @@ export default function Cart() {
 				)}
 			/>
 
-			<Text style={{ fontSize: 20, marginVertical: 20 }}>Comparativa total:</Text>
+			<AppButton
+				pressFunction={() => setShowDrawer(true)}
+				text="Guardar lista"
+				variant="light"
+			/>
 
-			{totals.map((t) => (
-				<Text key={t.market} style={{ marginVertical: 6, fontSize: 16 }}>
-					{t.market}: ${t.total.toFixed(0)}
-					{t.missing && " (faltan productos)"}
-					{bestComplete && bestComplete.market === t.market && !t.missing
-						? " ← ⭐ Más barato con todo"
-						: ""}
-				</Text>
-			))}
+			<AppDrawer visible={showDrawer} onClose={() => setShowDrawer(false)}>
+				<Text>Nombre Lista</Text>
+				<AppButton
+					pressFunction={() => setShowDrawer(true)}
+					text="Crear lista"
+					variant="light"
+				/>
+			</AppDrawer>
+			
 		</View>
 	)
 }
