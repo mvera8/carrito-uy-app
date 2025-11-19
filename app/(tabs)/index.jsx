@@ -10,9 +10,6 @@ export default function Index() {
 			flex: 1,
 			backgroundColor: colors.bg,
 		},
-		text: {
-			color: colors.text,
-		},
 	});
 
 	return (

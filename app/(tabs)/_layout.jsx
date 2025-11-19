@@ -20,7 +20,7 @@ const TabsLayout = () => {
 		},
 		{
 			name: "scan",
-			title: "",
+			title: "Scan",
 			icon: "scan",
 		},
 		{
@@ -70,17 +70,15 @@ const TabsLayout = () => {
 										size={size}
 										style={{
 											backgroundColor: colors.primary,
-											borderWidth: 5,
-											borderColor: "red",
-											borderRadius: 999,
+											borderRadius: 15,
 											color: "white",
 											shadowOffset: { width: 0, height: 3 },
-                			transform: [{ translateY: -20 }],
-											width: 70,
+											width: 60,
 											height: 70,
 											textAlign: "center",
-											lineHeight: 60,
-											fontSize: 35,
+											lineHeight: 70,
+											fontSize: 30,
+											marginBottom: 60
 										}}
 									/>
 								);
