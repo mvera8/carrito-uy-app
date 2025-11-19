@@ -17,21 +17,21 @@ export function SupermarketCard({ card }) {
 
 const styles = StyleSheet.create({
   card_template:{
-    width: 120,
+    width: 100,
 		overflow: "hidden",
 		marginRight: 20,
     height: 70,
 		borderRadius : 10,
   },
   card_image: {
-    width: 120,
+    width: 100,
 		resizeMode: "contain",
     height: 70,
 		backgroundColor: "white"
   },
   text_container:{
     position: "absolute",
-    width: 120,
+    width: 100,
     height: 30,
     bottom:0,
     padding: 5,

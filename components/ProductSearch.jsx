@@ -68,7 +68,7 @@ export function ProductSearch({ onSelect }) {
             data={filtered}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
-              const pricesList = Object.values(item.prices);
+              const pricesList = Object.values(item.prices).map(p => p.price);
               const minPrice =
                 pricesList.length > 0
                   ? Math.min(...pricesList)

@@ -14,6 +14,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useCart } from "../hooks/useCart";
 import { SUPERMARKETS } from "../data/supermarkets";
 import PRICES from "../data/prices.json";
+import { AppButton } from "../components/AppButton";
+import { AppIcon } from "../components/AppIcon";
 
 export default function Product() {
   const router = useRouter();
@@ -103,8 +105,8 @@ export default function Product() {
   // ------------------ MARKETS ------------------
   const computedMarkets = useMemo(() => {
     return Object.entries(productEntry.prices)
-      .filter(([_, price]) => price && !isNaN(price))
-      .map(([market, price]) => {
+      .filter(([_, priceData]) => priceData && priceData.price && !isNaN(priceData.price))
+      .map(([market, priceData]) => {
         const supermarket = SUPERMARKETS.find(
           (s) =>
             s.id === market ||
@@ -113,8 +115,10 @@ export default function Product() {
 
         return {
           market,
-          price: Number(price),
-          finalPrice: Number(price),
+          price: Number(priceData.price),
+          finalPrice: Number(priceData.price),
+          listPrice: priceData.listPrice,
+          promo: priceData.promo,
           supermarket,
         };
       });
@@ -188,13 +192,32 @@ export default function Product() {
                   </View>
                 )}
 
+								{item.supermarket && (
+                  <View style={{ marginRight: 10 }}>
+                    <Text>{item.supermarket.name}</Text>
+                  </View>
+                )}
+
                 <View style={{ alignItems: "flex-end" }}>
+                  {item.promo && item.listPrice && (
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        color: "#999",
+                        textDecorationLine: "line-through",
+                      }}
+                    >
+                      ${item.listPrice}
+                    </Text>
+                  )}
                   <Text
                     style={{
                       fontSize: 20,
                       fontWeight: "bold",
                       color: isMostExpensive
                         ? "red"
+                        : item.promo
+                        ? "green"
                         : "#000",
                     }}
                   >
@@ -306,9 +329,7 @@ export default function Product() {
                 marginBottom: 24,
               }}
             >
-              <Text style={{ fontSize: 24, marginBottom: 8 }}>
-                ✓
-              </Text>
+							<AppIcon icon="checkmark-outline" />
               <Text
                 style={{
                   fontSize: 20,
@@ -325,46 +346,16 @@ export default function Product() {
               </Text>
             </View>
 
-            <TouchableOpacity
-              onPress={handleGoToCart}
-              style={{
-                backgroundColor: "#000",
-                padding: 16,
-                borderRadius: 8,
-                alignItems: "center",
-                marginBottom: 12,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#fff",
-                  fontSize: 16,
-                  fontWeight: "600",
-                }}
-              >
-                Ver carrito
-              </Text>
-            </TouchableOpacity>
+						<AppButton 
+							pressFunction={handleGoToCart} 
+							text="Ver carrito" 
+						/>
 
-            <TouchableOpacity
-              onPress={handleContinueShopping}
-              style={{
-                backgroundColor: "#f5f5f5",
-                padding: 16,
-                borderRadius: 8,
-                alignItems: "center",
-              }}
-            >
-              <Text
-                style={{
-                  color: "#000",
-                  fontSize: 16,
-                  fontWeight: "600",
-                }}
-              >
-                Seguir comprando
-              </Text>
-            </TouchableOpacity>
+						<AppButton 
+							pressFunction={handleContinueShopping} 
+							text="Seguir comprando"
+							variant="light"
+						/>
           </Animated.View>
         </TouchableOpacity>
       </Modal>
