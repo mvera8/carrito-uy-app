@@ -1,3 +1,4 @@
+// app/(tabs)/_layout.jsx
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { useCart } from "../../hooks/useCart";
@@ -29,9 +30,9 @@ const TabsLayout = () => {
 			icon: "list",
 		},
 		{
-			name: "settings",
-			title: "Settings",
-			icon: "settings",
+			name: "info",
+			title: "Info",
+			icon: "information",
 		},
 	];
 

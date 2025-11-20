@@ -2,6 +2,7 @@
   "expo": {
     "name": "carrito-uy-app",
     "slug": "carrito-uy-app",
+		"scheme": "",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,7 +29,9 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-barcode-scanner",
+			"expo-camera"
     ]
   }
 }

@@ -1,6 +1,7 @@
-import { View, Text, FlatList, ActivityIndicator, Image, StyleSheet } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import { SUPERMARKETS } from "../data/supermarkets";
 import { SupermarketCard } from "./SupermarketCard";
+import { AppSpiner } from "./AppSpiner";
 
 export const SupermarketList = () => {
   if (!SUPERMARKETS) return null; // seguridad extra
@@ -10,7 +11,7 @@ export const SupermarketList = () => {
 			<Text style={{ paddingLeft: 20, fontSize: 22, fontWeight: "bold", marginBottom: 10 }}>Supermercados</Text>
 
       {SUPERMARKETS.length === 0 ? (
-        <ActivityIndicator color="#fff" size="large" />
+        <AppSpiner />
       ) : (
         <FlatList
 					style={{ paddingLeft: 20 }}
