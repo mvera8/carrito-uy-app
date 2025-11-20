@@ -264,7 +264,7 @@ export default function Product() {
 
       <AppDrawer visible={showDrawer} onClose={() => setShowDrawer(false)}>
 				<View style={{ alignItems: "center", marginBottom: 24 }}>
-					<AppIcon icon="checkmark-outline" />
+					<AppIcon icon="checkmark" />
 					<Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 4 }}>
 						Producto agregado
 					</Text>

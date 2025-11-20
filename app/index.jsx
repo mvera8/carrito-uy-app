@@ -2,12 +2,11 @@ import { View, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { AppButton } from "../components/AppButton";
 import { AppIcon } from "../components/AppIcon";
-import { SafeAreaView } from "react-native-safe-area-context";
 import useTheme from "../hooks/useTheme";
 
 export default function Welcome() {
   const router = useRouter();
-	const { colors } = useTheme();
+	const { colors, insets } = useTheme();
 
   const handleStart = () => {
     router.replace("/(tabs)");
@@ -16,33 +15,43 @@ export default function Welcome() {
 	const styles = StyleSheet.create({
     container: {
 			flex: 1,
-			padding: 20,
 			backgroundColor: colors.primary,
 			justifyContent: "space-between",
+			paddingBottom: insets.bottom,
+			paddingLeft: 20,
+			paddingRight: 20,
+			paddingTop: insets.top
 		},
 		title: {
-			fontSize: 24,
+			fontSize: 40,
 			fontWeight: "bold",
-			marginBottom: 20,
+			marginBottom: 10,
 			textTransform: "capitalize",
+		},
+		text: {
+			color: "gray",
+			fontSize: 22,
+			marginBottom: 20,
+			paddingRight: 20,
 		},
   });
 
   return (
-		<SafeAreaView style={styles.container}>
+		<View style={styles.container}>
 			<AppIcon
-				icon="cart-outline"
+				icon="cart"
 				variant="dark"
 			/>
 
 			<View style={styles.bottomContent}>
-				<Text style={styles.title}>Easy way to save your money</Text>
+				<Text style={styles.title}>Una forma fácil de ahorrar dinero</Text>
+				<Text style={styles.text}>Descubrí en qué súper tu compra cuesta menos.</Text>
 				<AppButton
 					pressFunction={handleStart}
 					text="Comenzar"
 					variant="dark"
 				/>
 			</View>
-		</SafeAreaView>
+		</View>
   );
 }
