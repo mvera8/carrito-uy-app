@@ -1,4 +1,4 @@
-import { Modal, TouchableOpacity, Animated, View } from "react-native";
+import { Modal, TouchableOpacity, Animated } from "react-native";
 import { useRef, useEffect } from "react";
 
 export function AppDrawer({ visible, onClose, children }) {

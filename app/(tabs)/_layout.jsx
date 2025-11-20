@@ -63,26 +63,26 @@ const TabsLayout = () => {
 						title: tab.title,
 						tabBarIcon: ({ color, size, focused }) => {
 							// 👇 Caso especial para la tab "scan"
-							if (tab.name === "scan") {
-								return (
-									<Ionicons
-										name={tab.icon}
-										size={size}
-										style={{
-											backgroundColor: colors.primary,
-											borderRadius: 15,
-											color: "white",
-											shadowOffset: { width: 0, height: 3 },
-											width: 60,
-											height: 70,
-											textAlign: "center",
-											lineHeight: 70,
-											fontSize: 30,
-											marginBottom: 60
-										}}
-									/>
-								);
-							}
+							// if (tab.name === "scan") {
+							// 	return (
+							// 		<Ionicons
+							// 			name={tab.icon}
+							// 			size={size}
+							// 			style={{
+							// 				backgroundColor: colors.primary,
+							// 				borderRadius: 15,
+							// 				color: "white",
+							// 				shadowOffset: { width: 0, height: 3 },
+							// 				width: 60,
+							// 				height: 70,
+							// 				textAlign: "center",
+							// 				lineHeight: 70,
+							// 				fontSize: 30,
+							// 				marginBottom: 60
+							// 			}}
+							// 		/>
+							// 	);
+							// }
 
 							// Todas las otras tabs normales
 							return <Ionicons name={tab.icon} size={size} color={color} />;

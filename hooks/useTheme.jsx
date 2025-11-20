@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const lightColors = {
@@ -12,11 +13,7 @@ const lightColors = {
   warning: "#f59e0b",
   danger: "#ef4444",
   shadow: "#000000",
-  backgrounds: {
-    input: "#ffffff",
-    editInput: "#ffffff",
-  },
-  statusBarStyle: "dark-content",
+  statusBarStyle: "dark",
 };
 
 const darkColors = {
@@ -30,17 +27,14 @@ const darkColors = {
   warning: "#fbbf24",
   danger: "#f87171",
   shadow: "#000000",
-  backgrounds: {
-    input: "#1e293b",
-    editInput: "#0f172a",
-  },
-  statusBarStyle: "light-content",
+  statusBarStyle: "light",
 };
 
 const ThemeContext = createContext(undefined);
 
 export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+	const insets = useSafeAreaInsets();
 
   useEffect(() => {
     AsyncStorage.getItem("darkMode").then((value) => {
@@ -57,7 +51,7 @@ export const ThemeProvider = ({ children }) => {
   const colors = isDarkMode ? darkColors : lightColors;
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode, colors }}>
+    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode, colors, insets }}>
       {children}
     </ThemeContext.Provider>
   );
