@@ -81,6 +81,24 @@
 		]
 	},
 	{
+		"id": "mayonesa-uruguay-500-cc",
+		"name": "Mayonesa Uruguay 500cc",
+		"ean13": "7730132000779",
+		"urls": [
+			"https://www.tiendainglesa.com.uy/supermercado/mayonesa-uruguay-500-cc.producto?377978",
+			"https://www.eldorado.com.uy/mayonesa-uruguay-500gr/p"
+		]
+	},
+	{
+		"id": "mayonesa-uruguay-1-kg",
+		"name": "Mayonesa Uruguay 1Kg",
+		"ean13": "7730132001417",
+		"urls": [
+			"https://www.eldorado.com.uy/mayonesa-uruguay-1kg/p",
+			""
+		]
+	},
+	{
 		"id": "pan-lacteado-bimbo",
 		"name": "Pan lacteado BIMBO",
 		"urls": [

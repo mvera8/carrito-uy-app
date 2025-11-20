@@ -31,3 +31,9 @@ https://www.devoto.com.uy/
 https://www.geant.com.uy/
 https://www.disco.com.uy/
 https://www.elclon.com.uy/
+
+----
+
+
+Tipo: ean13
+Datos: 7730132001417

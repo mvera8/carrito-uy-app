@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { AppButton } from "../components/AppButton";
 import { AppIcon } from "../components/AppIcon";
 import useTheme from "../hooks/useTheme";
+import { AppSection } from "../components/AppSection";
 
 export default function Welcome() {
   const router = useRouter();
@@ -13,15 +14,6 @@ export default function Welcome() {
   };
 
 	const styles = StyleSheet.create({
-    container: {
-			flex: 1,
-			backgroundColor: colors.primary,
-			justifyContent: "space-between",
-			paddingBottom: insets.bottom,
-			paddingLeft: 20,
-			paddingRight: 20,
-			paddingTop: insets.top
-		},
 		title: {
 			fontSize: 40,
 			fontWeight: "bold",
@@ -37,13 +29,19 @@ export default function Welcome() {
   });
 
   return (
-		<View style={styles.container}>
-			<AppIcon
-				icon="cart"
-				variant="dark"
-			/>
+		<AppSection style={{
+			backgroundColor: colors.primary,
+			justifyContent: "space-between",
+			paddingBottom: insets.bottom,
+		}}>
+			<View style={{ paddingTop: 20 }}>
+				<AppIcon
+					icon="cart"
+					variant="dark"
+				/>
+			</View>
 
-			<View style={styles.bottomContent}>
+			<View style={{ paddingBottom: 20 }}>
 				<Text style={styles.title}>Una forma fácil de ahorrar dinero</Text>
 				<Text style={styles.text}>Descubrí en qué súper tu compra cuesta menos.</Text>
 				<AppButton
@@ -52,6 +50,6 @@ export default function Welcome() {
 					variant="dark"
 				/>
 			</View>
-		</View>
+		</AppSection>
   );
 }

@@ -7,7 +7,7 @@ export function AppButton({
   variant = "primary", // "primary" | "light" | "dark"
   style 
 }) {
-	const { colors } = useTheme();
+	const { colors, isDarkMode } = useTheme();
 
   // Definir estilos según variante
   const getVariantStyles = () => {
@@ -19,8 +19,8 @@ export function AppButton({
         };
       case "light":
         return {
-          backgroundColor: "#f5f5f5",
-          textColor: "#000",
+          backgroundColor: isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
+          textColor: isDarkMode ? "#fff" : "#000",
         };
       case "primary":
       default:
