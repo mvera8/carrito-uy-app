@@ -5,6 +5,8 @@ import { AppButton } from '../../components/AppButton';
 import useTheme from '../../hooks/useTheme';
 import PRICES from '../../data/prices.json';
 import { AppDrawer } from '../../components/AppDrawer';
+import { AppSection } from '../../components/AppSection';
+import { AppPublicidad } from '../../components/AppPublicidad';
 
 export default function Cart() {
 	const { colors } = useTheme();
@@ -15,9 +17,8 @@ export default function Cart() {
 	const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.bg,
-			padding: 20,
-			paddingBottom: 50
+      justifyContent: "center",
+      alignItems: "center",
     },
     text: {
       color: colors.text,
@@ -73,14 +74,17 @@ export default function Cart() {
 
 	if (cart.length === 0) {
 		return (
-			<View style={styles.container}>
-				<Text style={styles.text}>El carrito está vacío 😢</Text>
-			</View>
+			<AppSection>
+				<AppPublicidad />
+				<View style={styles.container}>
+					<Text style={styles.text}>El carrito está vacío 😢</Text>
+				</View>
+			</AppSection>
 		);
 	}
 
 	return (
-		<View style={styles.container}>
+		<AppSection>
 			{totals.map((t) => (
 				<Text key={t.market} style={{ marginVertical: 6, fontSize: 16 }}>
 					{t.market}: ${t.total.toFixed(0)}
@@ -169,6 +173,6 @@ export default function Cart() {
 				/>
 			</AppDrawer>
 			
-		</View>
+		</AppSection>
 	)
 }

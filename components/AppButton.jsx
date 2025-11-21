@@ -20,7 +20,7 @@ export function AppButton({
       case "light":
         return {
           backgroundColor: isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
-          textColor: isDarkMode ? "#fff" : "#000",
+          textColor: colors.text,
         };
       case "primary":
       default:
