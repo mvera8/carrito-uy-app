@@ -14,6 +14,8 @@ import PRICES from "../data/prices.json";
 import { AppButton } from "../components/AppButton";
 import { AppIcon } from "../components/AppIcon";
 import { AppDrawer } from "../components/AppDrawer";
+import { AppSection } from "../components/AppSection";
+import { AppHeader } from "../components/AppHeader";
 
 export default function Product() {
   const router = useRouter();
@@ -131,8 +133,13 @@ export default function Product() {
 
   // ------------------ UI ------------------
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
+    <AppSection>
+			<AppHeader
+				title="Producto" 
+				showBackButton={true}
+			/>
+
+    	<View style={{ flex: 1 }}>
         <View style={{ paddingHorizontal: 20 }}>
           <Text style={{ fontSize: 22, marginBottom: 20 }}>
             {productEntry.name}
@@ -280,6 +287,6 @@ export default function Product() {
 					variant="light"
 				/>
 			</AppDrawer>
-    </SafeAreaView>
+    </AppSection>
   );
 }

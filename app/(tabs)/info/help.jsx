@@ -1,16 +1,15 @@
 // app/(tabs)/info/help.jsx
-import { Text, TouchableOpacity } from "react-native";
-import { router } from "expo-router";
+import { Text } from "react-native";
 import { AppSection } from "../../../components/AppSection";
 import { AppHeader } from "../../../components/AppHeader";
 
 export default function Help() {
   return (
     <AppSection>
-			<AppHeader />
-      <TouchableOpacity onPress={() => router.back()}>
-        <Text style={{ marginBottom: 20 }}>← Volver</Text>
-      </TouchableOpacity>
+			<AppHeader 
+				title="Ayuda" 
+				showBackButton={true}
+			/>
 
       <Text>help</Text>
     </AppSection>

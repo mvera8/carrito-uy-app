@@ -6,6 +6,7 @@ import { AppSection } from '../../components/AppSection';
 import { AppButton } from '../../components/AppButton';
 import { AppSpiner } from '../../components/AppSpiner';
 import useTheme from '../../hooks/useTheme';
+import { AppPublicidad } from '../../components/AppPublicidad';
 
 const scan = () => {
   const { colors } = useTheme();
@@ -40,6 +41,7 @@ const scan = () => {
     },
     camera: {
       flex: 1,
+			backgroundColor: "red"
     },
     overlay: {
       position: 'absolute',
@@ -162,7 +164,9 @@ const scan = () => {
               variant="light"
             />
           </>
-        : <CameraView
+        : <>
+				<AppPublicidad />
+				<CameraView
             style={styles.camera}
             facing='back'
             onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
@@ -190,6 +194,7 @@ const scan = () => {
               </Text>
             </View>
           </CameraView>
+				</>
       }
     </AppSection>
   );
