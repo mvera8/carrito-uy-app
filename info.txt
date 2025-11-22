@@ -39,6 +39,7 @@ Tareas:
 productos buscados home
 productos escaneados DB
 imagenes? - https://www.thiings.co/things/puffed-rice-snack
+guardar datos del escaneo, si esta o no el producto
 
 Despues:
 categorias, filtrar en home page

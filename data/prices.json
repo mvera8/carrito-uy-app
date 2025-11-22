@@ -1,12 +1,12 @@
 {
-  "timestamp": "2025-11-19T13:51:30.410Z",
+  "timestamp": "2025-11-22T11:53:43.994Z",
   "data": {
-    "arroz-blanco-saman-1-kg": {
+    "arroz-blanco-saman-1kg": {
       "name": "Arroz Blanco SAMAN 1kg",
       "prices": {
         "tata": {
-          "price": 83,
-          "listPrice": 83,
+          "price": 63,
+          "listPrice": 63,
           "promo": false
         },
         "tiendainglesa": {
@@ -36,7 +36,7 @@
         }
       }
     },
-    "arroz-blanco-saman-5-kg": {
+    "arroz-blanco-saman-5kg": {
       "name": "Arroz Blanco SAMAN 5kg",
       "prices": {
         "tata": {
@@ -61,13 +61,13 @@
         }
       }
     },
-    "coca-15-l": {
+    "cocacola-original-15l": {
       "name": "Coca-Cola Original 1.5l",
       "prices": {
         "tata": {
-          "price": 116,
+          "price": 145,
           "listPrice": 145,
-          "promo": true
+          "promo": false
         },
         "eldorado": {
           "price": 145,
@@ -85,7 +85,7 @@
           "promo": false
         },
         "geant": {
-          "price": null,
+          "price": 145,
           "listPrice": null,
           "promo": false
         },
@@ -96,7 +96,7 @@
         }
       }
     },
-    "frankfurters-schneck-8-un": {
+    "frankfurters-cortos-schneck-8-unidades": {
       "name": "Frankfurters Cortos SCHNECK 8 Unidades",
       "prices": {
         "tata": {
@@ -131,7 +131,7 @@
         }
       }
     },
-    "galletas-oreo-119-g": {
+    "galletas-banadas-oreo-chocolate-119g": {
       "name": "Galletas Bañadas Oreo Chocolate 119g",
       "prices": {
         "tata": {
@@ -161,7 +161,7 @@
         }
       }
     },
-    "huevos-colorados-prodhin-x-15-un": {
+    "huevo-colorados-prodhin-15un": {
       "name": "Huevo colorados PRODHIN 15un",
       "prices": {
         "tiendainglesa": {
@@ -170,8 +170,8 @@
           "promo": false
         },
         "tata": {
-          "price": 249,
-          "listPrice": 249,
+          "price": 300,
+          "listPrice": 300,
           "promo": false
         },
         "eldorado": {
@@ -196,7 +196,7 @@
         }
       }
     },
-    "leche-descremada-conaprole-1-l": {
+    "lecha-descremada-conaprole-1l": {
       "name": "Lecha Descremada CONAPROLE 1l",
       "prices": {
         "disco": {
@@ -231,6 +231,31 @@
         }
       }
     },
+    "mayonesa-uruguay-500cc": {
+      "name": "Mayonesa Uruguay 500cc",
+      "prices": {
+        "tiendainglesa": {
+          "price": 83,
+          "listPrice": null,
+          "promo": false
+        },
+        "eldorado": {
+          "price": 99,
+          "listPrice": null,
+          "promo": false
+        }
+      }
+    },
+    "mayonesa-uruguay-1kg": {
+      "name": "Mayonesa Uruguay 1Kg",
+      "prices": {
+        "eldorado": {
+          "price": 179.9,
+          "listPrice": null,
+          "promo": false
+        }
+      }
+    },
     "pan-lacteado-bimbo": {
       "name": "Pan lacteado BIMBO",
       "prices": {
@@ -250,7 +275,7 @@
           "promo": false
         },
         "eldorado": {
-          "price": 134.9,
+          "price": 147,
           "listPrice": null,
           "promo": false
         },
@@ -266,7 +291,7 @@
         }
       }
     },
-    "pan-viena-sorchantes-viena-8un": {
+    "pan-viena-los-sorchantes-8un": {
       "name": "Pan Viena LOS SORCHANTES 8un",
       "prices": {
         "tata": {
@@ -301,13 +326,13 @@
         }
       }
     },
-    "pepsi-cola-500-ml": {
+    "refresco-pepsi-cola-500-ml": {
       "name": "Refresco PEPSI Cola 500 ml",
       "prices": {
         "tata": {
-          "price": 54,
+          "price": 68,
           "listPrice": 68,
-          "promo": true
+          "promo": false
         },
         "tiendainglesa": {
           "price": 49,
@@ -336,7 +361,7 @@
         }
       }
     },
-    "repelente-off-extra-290-cc": {
+    "repelente-para-mosquitos-off-extra-duracion-aerosol-290cc": {
       "name": "Repelente para Mosquitos OFF! Extra Duración Aerosol 290cc",
       "prices": {
         "tiendainglesa": {
@@ -366,7 +391,7 @@
         }
       }
     },
-    "suprema-pollo-1-kg": {
+    "suprema-de-pollo-1kg": {
       "name": "Suprema de Pollo 1Kg",
       "prices": {
         "tiendainglesa": {
@@ -391,7 +416,7 @@
         }
       }
     },
-    "yerba-canarias-especial-1": {
+    "yerba-canarias-edicion-especial-1kg": {
       "name": "Yerba CANARIAS Edición Especial 1kg",
       "prices": {
         "tiendainglesa": {

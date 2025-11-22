@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
+import { AppSection } from '../../components/AppSection';
 import useTheme from '../../hooks/useTheme';
 
 export default function Lists() {
@@ -9,10 +10,8 @@ export default function Lists() {
 	
 	const styles = StyleSheet.create({
     container: {
-      flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: colors.bg,
     },
     text: {
       color: colors.text,
@@ -21,15 +20,15 @@ export default function Lists() {
 
 	if (lists.length === 0) {
 		return (
-			<View style={styles.container}>
+			<AppSection style={styles.container}>
 				<Text style={styles.text}>No se encontró ninguna lista.</Text>
-			</View>
+			</AppSection>
 		);
 	}
 
 	return (
-		<View style={styles.container}>
+		<AppSection style={styles.container}>
 			<Text style={styles.text}>Listas</Text>
-		</View>
+		</AppSection>
 	)
 }

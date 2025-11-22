@@ -29,6 +29,19 @@ function computePromo(price, listPrice) {
 }
 
 /**
+ * Genera un ID slug desde el nombre del producto
+ */
+function generateId(name) {
+  return name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Elimina acentos
+    .replace(/[^a-z0-9\s]/g, "") // Solo letras, números y espacios
+    .trim()
+    .replace(/\s+/g, "-"); // Espacios a guiones
+}
+
+/**
  * scrapeMetaPrice
  * - Devuelve { price, listPrice, promo }
  */
@@ -119,11 +132,6 @@ async function scrapeMetaPrice(url) {
 /**
  * scrapeWithPuppeteer - versión reforzada
  * - Devuelve { price, listPrice, promo }
- * - Intenta:
- *   1) window globals (VTEX common): __RUNTIME__, __PRELOADED_STATE__, __INITIAL_STATE__
- *   2) dataLayer
- *   3) parseo de scripts JSON
- *   4) REGEX en scripts buscando "PriceTags" o "Label":"Antes"
  */
 async function scrapeWithPuppeteer(pageUrl) {
   let browser;
@@ -156,7 +164,6 @@ async function scrapeWithPuppeteer(pageUrl) {
 
         for (const g of possibles) {
           if (!g || typeof g !== "object") continue;
-          // Buscar items[].sellers[].commertialOffer
           const items = g?.items ?? g?.product ?? g?.products ?? g?.catalog ?? null;
           if (items && Array.isArray(items) && items.length) {
             const it = items[0];
@@ -164,7 +171,6 @@ async function scrapeWithPuppeteer(pageUrl) {
             const comm = seller?.commertialOffer ?? it?.commertialOffer ?? null;
             if (comm) {
               const price = comm.Price ?? comm.price ?? comm.Preco ?? null;
-              // PriceTags inside comm
               let listPrice = comm.ListPrice ?? comm.listPrice ?? null;
               if (Array.isArray(comm.PriceTags)) {
                 const antes = comm.PriceTags.find(t => t?.Label && /ante|anterior|antes|original/i.test(String(t.Label)));
@@ -173,7 +179,6 @@ async function scrapeWithPuppeteer(pageUrl) {
               if (price != null) return { price: Number(price), listPrice: listPrice != null ? Number(listPrice) : null, promo: null };
             }
           }
-          // También intentar caminos directos (parsed offers)
           const offers = g?.offers ?? null;
           if (offers) {
             if (Array.isArray(offers) && offers.length) {
@@ -199,13 +204,8 @@ async function scrapeWithPuppeteer(pageUrl) {
       };
     }
 
-    /* -----------------------------------------------------------------------
-   2) TU BLOQUE: window.__STATE__
-   EXACTAMENTE COMO LO PEDISTE PERO FUNCIONAL
------------------------------------------------------------------------- */
     const stateJson = await page.evaluate(() => {
       try {
-        // 1) intentar encontrar el <script> que tenga window.__STATE__
         const script = [...document.scripts].find((s) =>
           s.innerText.includes("window.__STATE__")
         );
@@ -219,7 +219,6 @@ async function scrapeWithPuppeteer(pageUrl) {
           return JSON.parse(json);
         }
 
-        // 2) Fallback: si el script NO existe, probar si está en window directamente
         if (typeof window.__STATE__ === "object") {
           return window.__STATE__;
         }
@@ -252,7 +251,6 @@ async function scrapeWithPuppeteer(pageUrl) {
       }
     }
 
-
     // 1) dataLayer
     const fromDataLayer = await page.evaluate(() => {
       try {
@@ -283,8 +281,7 @@ async function scrapeWithPuppeteer(pageUrl) {
       };
     }
 
-
-    // 2) parsear scripts JSON y extraer PriceTags / commertialOffer
+    // 2) parsear scripts JSON
     const fromScripts = await page.evaluate(() => {
       try {
         const scripts = Array.from(document.querySelectorAll('script'));
@@ -292,11 +289,9 @@ async function scrapeWithPuppeteer(pageUrl) {
           const txt = s.innerText.trim();
           if (!txt) continue;
 
-          // Try parse JSON safely
           if ((txt.startsWith("{") || txt.startsWith("[")) && txt.length < 500000) {
             try {
               const json = JSON.parse(txt);
-              // VTEX shape
               const offer = json?.items?.[0]?.sellers?.[0]?.commertialOffer ?? json?.items?.[0]?.commertialOffer ?? null;
               if (offer) {
                 const price = offer.Price ?? offer.price ?? offer.Preco ?? null;
@@ -308,7 +303,6 @@ async function scrapeWithPuppeteer(pageUrl) {
                 if (price != null) return { price: Number(price), listPrice: listPrice != null ? Number(listPrice) : null, promo: null };
               }
 
-              // AggregateOffer with nested offers
               const agg = json?.offers ?? null;
               if (agg) {
                 if (Array.isArray(agg.offers) && agg.offers.length > 0) {
@@ -327,28 +321,21 @@ async function scrapeWithPuppeteer(pageUrl) {
                 }
               }
 
-              // possible product containers
               const possible = json?.product ?? json?.productInfo ?? json?.item ?? null;
               if (possible) {
                 const price = possible?.offers?.price ?? possible?.offers?.lowPrice ?? possible?.price ?? null;
                 const listPrice = possible?.offers?.listPrice ?? possible?.listPrice ?? null;
                 if (price != null) return { price: Number(price), listPrice: listPrice != null ? Number(listPrice) : null, promo: null };
               }
-            } catch (e) {
-              // non-parseable JSON - will try regex below
-            }
+            } catch (e) { }
           }
 
-          // 3) REGEX fallback inside script text: look for PriceTags blocks or "Label":"Antes"
-          // Search for PriceTags array text
           try {
             const lower = txt.toLowerCase();
             if (lower.includes("pricetags") || lower.includes('"label":"antes"') || /"label"\s*:\s*"antes"/i.test(txt)) {
-              // try find "PriceTags":[...]
               const m = txt.match(/"PriceTags"\s*:\s*(\[[\s\S]*?\])/i) || txt.match(/"pricetags"\s*:\s*(\[[\s\S]*?\])/i);
               if (m && m[1]) {
                 const arrText = m[1];
-                // find "antes" object inside array
                 const re = /{[\s\S]*?"label"\s*:\s*"([^"]+)"[\s\S]*?"price"\s*:\s*([\d.]+)/ig;
                 let mm;
                 let foundList = null;
@@ -360,31 +347,24 @@ async function scrapeWithPuppeteer(pageUrl) {
                     break;
                   }
                 }
-                // If found list price, try to find "Price":<num> near (the actual price)
                 if (foundList != null) {
-                  // try to find "Price":<num> (current price) in same script
                   const mPrice = txt.match(/"Price"\s*:\s*([\d.]+)/i) || txt.match(/"price"\s*:\s*([\d.]+)/i);
                   const current = mPrice ? Number(mPrice[1]) : null;
                   if (current != null) return { price: current, listPrice: Number(foundList), promo: null };
-                  // else try lowPrice or "price": inside aggregate
                   const low = txt.match(/"lowPrice"\s*:\s*([\d.]+)/i) || txt.match(/"price"\s*:\s*([\d.]+)/i);
                   if (low) return { price: Number(low[1]), listPrice: Number(foundList), promo: null };
                 }
               }
 
-              // If no PriceTags array, search for direct pattern: "Label":"Antes"... "Price":74
               const re2 = /"label"\s*:\s*"([^"]+)"[\s\S]{0,120}?"price"\s*:\s*([\d.]+)/ig;
               let m2;
               while ((m2 = re2.exec(txt)) !== null) {
                 const label = m2[1];
                 const val = Number(m2[2]);
                 if (/ante|anterior|antes|original/i.test(label)) {
-                  // try to find a "price" for "Ahora" or other price nearby
-                  // look ahead/back a bit for another "price"
                   const context = txt.slice(Math.max(0, m2.index - 200), Math.min(txt.length, m2.index + 400));
                   const nowMatch = context.match(/"label"\s*:\s*"([^"]+)"[\s\S]{0,120}?"price"\s*:\s*([\d.]+)/ig);
                   if (nowMatch && nowMatch.length) {
-                    // find first label that is not "antes"
                     for (const nm of nowMatch) {
                       const m3 = /"label"\s*:\s*"([^"]+)"[\s\S]{0,120}?"price"\s*:\s*([\d.]+)/i.exec(nm);
                       if (m3 && !/ante|anterior|antes|original/i.test(m3[1])) {
@@ -392,15 +372,12 @@ async function scrapeWithPuppeteer(pageUrl) {
                       }
                     }
                   }
-                  // fallback: find any "price" elsewhere in script (best-effort)
                   const anyPrice = txt.match(/"price"\s*:\s*([\d.]+)/i);
                   if (anyPrice) return { price: Number(anyPrice[1]), listPrice: val, promo: null };
                 }
               }
             }
-          } catch (e) {
-            // ignore regex errors, continue to next script
-          }
+          } catch (e) { }
         }
       } catch (e) { }
       return null;
@@ -415,7 +392,6 @@ async function scrapeWithPuppeteer(pageUrl) {
       };
     }
 
-    // 4) meta tag product:price:amount
     const metaPrice = await page.$eval(
       'meta[property="product:price:amount"]',
       (el) => el.getAttribute("content")
@@ -426,7 +402,6 @@ async function scrapeWithPuppeteer(pageUrl) {
       return { price: Number(metaPrice), listPrice: null, promo: false };
     }
 
-    // 5) JSON-LD fallback (re-check)
     const jsonLd = await page.$$eval('script[type="application/ld+json"]', (els) =>
       els.map((el) => el.innerText)
     );
@@ -478,7 +453,6 @@ async function scrapeWithPuppeteer(pageUrl) {
       }
     }
 
-    // 6) fallback: buscar número en body
     const bodyText = await page.evaluate(() => document.body.innerText);
     const m = bodyText.match(/"price"\s*:\s*([\d.]+)/) || bodyText.match(/([\d]{2,4}[.,]\d{2})/);
     if (m && m[1]) {
@@ -496,13 +470,37 @@ async function scrapeWithPuppeteer(pageUrl) {
 }
 
 (async () => {
-  const results = {};
+  const results = [];
 
   for (const product of products) {
-    const item = { name: product.name, prices: {} };
+    const productId = generateId(product.name);
 
-    for (const url of product.urls) {
-      const host = new URL(url).hostname.replace("www.", "").split(".")[0];
+    const item = {
+      id: productId,
+      name: product.name,
+      image: product.image || null,
+      ean13: product.ean13 || null,
+      prices: {}
+    };
+
+    // Filtrar URLs válidas
+    const validUrls = (product.urls || []).filter(url => url && url.trim().length > 0);
+
+    if (validUrls.length === 0) {
+      console.log(`⚠️  ${product.name}: No tiene URLs válidas, saltando...`);
+      results.push(item);
+      console.log("-");
+      continue;
+    }
+
+    for (const url of validUrls) {
+      let host;
+      try {
+        host = new URL(url).hostname.replace("www.", "").split(".")[0];
+      } catch (err) {
+        console.error(`❌ URL inválida en ${product.name}: ${url}`);
+        continue;
+      }
       let scraped = { price: null, listPrice: null, promo: false };
 
       try {
@@ -512,7 +510,6 @@ async function scrapeWithPuppeteer(pageUrl) {
           scraped = await scrapeMetaPrice(url);
         }
 
-        // Normalizar
         scraped = {
           price: scraped.price != null ? Number(scraped.price) : null,
           listPrice: scraped.listPrice != null ? Number(scraped.listPrice) : null,
@@ -521,13 +518,12 @@ async function scrapeWithPuppeteer(pageUrl) {
 
         item.prices[host] = scraped;
 
-        // Formateo consola: si hay listPrice mostramos "listPrice, promo: price"
         const label = scraped.price == null
           ? "N/A"
           : scraped.listPrice != null && scraped.promo
             ? `${scraped.listPrice}, promo: ${scraped.price}`
             : scraped.listPrice != null && !scraped.promo
-              ? `${scraped.listPrice}` // cuando listPrice igual a price -> sin promo mostramos solo listPrice
+              ? `${scraped.listPrice}`
               : `${scraped.price}`;
 
         console.log(`${product.name} | ${host}: ${label}`);
@@ -537,14 +533,49 @@ async function scrapeWithPuppeteer(pageUrl) {
       }
     }
 
-    results[product.id] = item;
+    results.push(item);
     console.log("-");
   }
 
+  // Generar prices.json (formato antiguo)
+  const pricesJson = {};
+  results.forEach(item => {
+    pricesJson[item.id] = {
+      name: item.name,
+      prices: item.prices
+    };
+  });
+
   fs.writeFileSync(
     "./data/prices.json",
-    JSON.stringify({ timestamp: new Date().toISOString(), data: results }, null, 2)
+    JSON.stringify({ timestamp: new Date().toISOString(), data: pricesJson }, null, 2)
   );
 
-  console.log("✅ prices.json generado correctamente");
+  // ✅ NUEVO: Generar products.js
+  let productsJsContent = `// Auto-generated by scrape.js
+// Last updated: ${new Date().toISOString()}
+
+export const products = [\n`;
+
+  results.forEach((item, index) => {
+    const imagePath = item.image
+      ? `require('../assets/products/${item.image}')`
+      : `require('../assets/products/image_cart.png')`;
+
+    productsJsContent += `  {\n`;
+    productsJsContent += `    id: "${item.id}",\n`;
+    productsJsContent += `    name: "${item.name}",\n`;
+    productsJsContent += `    image: ${imagePath},\n`;
+    if (item.ean13) {
+      productsJsContent += `    ean13: "${item.ean13}",\n`;
+    }
+    productsJsContent += `    prices: ${JSON.stringify(item.prices, null, 6).replace(/\n/g, '\n    ')}\n`;
+    productsJsContent += `  }${index < results.length - 1 ? ',' : ''}\n`;
+  });
+
+  productsJsContent += `];\n`;
+
+  fs.writeFileSync("./data/products.js", productsJsContent);
+
+  console.log("✅ products.js generado correctamente en ./lib/products.js");
 })();
