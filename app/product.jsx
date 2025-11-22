@@ -21,15 +21,19 @@ import useTheme from "../hooks/useTheme";
 
 export default function Product() {
   const router = useRouter();
-	const { colors } = useTheme();
+	const { colors, insets } = useTheme();
 
 	const styles = StyleSheet.create({
-    image: {
-      backgroundColor: "white",
-      borderRadius: 99,
-      height: 44,
-      marginRight: 30,
-      width: 44,
+		imageContainer: {
+			alignItems: "center",
+      backgroundColor: colors.primary,
+			paddingTop: insets.top,
+			padding: 10
+    },
+		image: {
+			display: "block",
+      height: 200,
+			width: 200
     },
 		container: {
       alignItems: "center",
@@ -124,22 +128,54 @@ export default function Product() {
   };
 
   return (
-    <AppSection>
-      <AppHeader
-        title="Detalles del Producto" 
-        showBackButton={true}
-      />
-
+		<>
+		<View style={styles.imageContainer}>
+			<Image
+				alt={product.name}
+				style={styles.image}
+				source={product.image || require('../assets/products/image_cart.png')}
+			/>
+		</View>
+    <AppSection style={{ paddingTop: 20 }}>
       <View style={{ flex: 1 }}>
         <View>
-          <Image
-            alt={product.name}
-            style={styles.image}
-            source={product.image || require('../assets/products/image_cart.png')}
-          />
           <Text style={{ fontSize: 22, marginBottom: 20 }}>
             {product.name}
           </Text>
+
+					<View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginBottom: 20,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => setQuantity(Math.max(1, quantity - 1))}
+              style={{
+                padding: 10,
+                backgroundColor: "#ddd",
+                borderRadius: 6,
+                marginHorizontal: 10,
+              }}
+            >
+              <Text>−</Text>
+            </TouchableOpacity>
+
+            <Text>{quantity}</Text>
+
+            <TouchableOpacity
+              onPress={() => setQuantity(quantity + 1)}
+              style={{
+                padding: 10,
+                backgroundColor: "#ddd",
+                borderRadius: 6,
+                marginHorizontal: 10,
+              }}
+            >
+              <Text>+</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <FlatList
@@ -149,17 +185,7 @@ export default function Product() {
             const isMostExpensive = item.finalPrice === maxPrice;
 
             return (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  backgroundColor: "#f9f9f9",
-                  borderRadius: 8,
-                  padding: 10,
-                  marginBottom: 10,
-                }}
-              >
+              <View>
                 {item.supermarket && (
                   <View style={{ marginRight: 10 }}>
                     <SupermarketCard card={item.supermarket} />
@@ -205,53 +231,14 @@ export default function Product() {
 
         {/* QUANTITY + ADD */}
         <View style={{ padding: 20, paddingBottom: 32 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginBottom: 20,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => setQuantity(Math.max(1, quantity - 1))}
-              style={{
-                padding: 10,
-                backgroundColor: "#ddd",
-                borderRadius: 6,
-                marginHorizontal: 10,
-              }}
-            >
-              <Text>−</Text>
-            </TouchableOpacity>
+          
 
-            <Text>{quantity}</Text>
 
-            <TouchableOpacity
-              onPress={() => setQuantity(quantity + 1)}
-              style={{
-                padding: 10,
-                backgroundColor: "#ddd",
-                borderRadius: 6,
-                marginHorizontal: 10,
-              }}
-            >
-              <Text>+</Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity
-            onPress={handleAddToCart}
-            style={{
-              backgroundColor: "#000",
-              padding: 14,
-              borderRadius: 8,
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "#fff", fontSize: 18 }}>
-              Agregar al carrito
-            </Text>
-          </TouchableOpacity>
+					<AppButton
+						pressFunction={handleAddToCart}
+						text="Agregar al carrito"
+						variant="dark"
+					/>
         </View>
       </View>
 
@@ -274,5 +261,6 @@ export default function Product() {
         />
       </AppDrawer>
     </AppSection>
+		</>
   );
 }
