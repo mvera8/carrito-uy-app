@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, FlatList, TouchableOpacity, Image, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { getLatestProducts } from '../../lib/products';
+import { getLatestProducts } from '../../lib/getProducts';
 import { AppInput } from '../../components/AppInput';
 import { AppHeader } from '../../components/AppHeader';
 import { AppSpiner } from '../../components/AppSpiner';
@@ -16,8 +16,28 @@ export default function Index() {
   const router = useRouter();
 
   const styles = StyleSheet.create({
+		card: {
+			flexDirection: "row",
+			alignItems: "center",
+      backgroundColor: "rgba(255,255,255,0.1)",
+			borderColor: "gray",
+			borderStyle: "solid",
+			borderRadius: 8,
+			borderWidth: 1,
+			marginBottom: 10,
+			padding: 10,
+    },
     text: {
       color: colors.text,
+			fontSize: 16,
+    	fontWeight: "500",
+    },
+		image: {
+			backgroundColor: "white",
+			borderRadius: 99,
+			height: 60,
+			marginRight: 30,
+      width: 60,
     },
   });
 
@@ -76,20 +96,19 @@ export default function Index() {
 									return (
 										<TouchableOpacity
 											onPress={() => handleSelect(item)}
-											style={{
-												backgroundColor: "rgba(255,255,255,0.1)",
-												borderColor: "gray",
-												borderStyle: "solid",
-												borderRadius: 8,
-												borderWidth: 1,
-												marginBottom: 4,
-												padding: 10,
-											}}
+											style={styles.card}
 										>
-											<Text style={styles.text}>{item.name}</Text>
-											<Text style={{ color: "gray" }}>
-												Desde ${minPrice}
-											</Text>
+											<Image
+												alt={item.name}
+												style={styles.image}
+												source={item.image || require('../../assets/products/image_cart.png')}
+											/>
+											<View>
+												<Text style={styles.text}>{item.name}</Text>
+												<Text style={{ color: "gray" }}>
+													Desde ${minPrice}
+												</Text>
+											</View>
 										</TouchableOpacity>
 									);
 								}}

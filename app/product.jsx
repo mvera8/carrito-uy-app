@@ -3,29 +3,48 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  Image,
+  StyleSheet,
 } from "react-native";
 import { useState, useMemo } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SupermarketCard } from "../components/SupermarketCard";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useCart } from "../hooks/useCart";
 import { SUPERMARKETS } from "../data/supermarkets";
-import PRICES from "../data/prices.json";
 import { AppButton } from "../components/AppButton";
 import { AppIcon } from "../components/AppIcon";
 import { AppDrawer } from "../components/AppDrawer";
 import { AppSection } from "../components/AppSection";
 import { AppHeader } from "../components/AppHeader";
+import { findProduct } from "../lib/getProducts";
+import useTheme from "../hooks/useTheme";
 
 export default function Product() {
   const router = useRouter();
+	const { colors } = useTheme();
+
+	const styles = StyleSheet.create({
+    image: {
+      backgroundColor: "white",
+      borderRadius: 99,
+      height: 44,
+      marginRight: 30,
+      width: 44,
+    },
+		container: {
+      alignItems: "center",
+    },
+    text: {
+      color: colors.text,
+    },
+  });
 
   // ------------------ PARAMS ------------------
   const params = useLocalSearchParams();
 
-  let product = null;
+  let productQuery = null;
   try {
-    product = params.product ? JSON.parse(params.product) : null;
+    productQuery = params.product ? JSON.parse(params.product) : null;
   } catch (e) {
     console.log("Error parsing params.product:", e);
   }
@@ -36,54 +55,26 @@ export default function Product() {
   const [quantity, setQuantity] = useState(1);
   const [showDrawer, setShowDrawer] = useState(false);
 
-  // ------------------ MATCH PRODUCT ------------------
+  // ------------------ FIND PRODUCT ------------------
+  const product = useMemo(() => {
+    return findProduct(productQuery);
+  }, [productQuery]);
 
-  // Devuelve { id, ...data }
-  const productEntry = useMemo(() => {
-    if (!product) return null;
-
-    // Match directo por id
-    if (product.id && PRICES.data[product.id]) {
-      return { id: product.id, ...PRICES.data[product.id] };
-    }
-
-    // Match por slug
-    if (product.slug && PRICES.data[product.slug]) {
-      return { id: product.slug, ...PRICES.data[product.slug] };
-    }
-
-    // Match por nombre
-    const match = Object.entries(PRICES.data).find(([key, item]) =>
-      product.name
-        ?.toLowerCase()
-        .includes(item.name.toLowerCase())
-    );
-
-    if (match) {
-      const [id, data] = match;
-      return { id, ...data };
-    }
-
-    return null;
-  }, [product]);
-
-  if (!productEntry) {
+  if (!product) {
     return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <AppSection style={styles.container}>
+				<AppHeader 
+					title="Error" 
+					showBackButton={true}
+				/>
         <Text>No se encontró el producto.</Text>
-      </SafeAreaView>
+      </AppSection>
     );
   }
 
   // ------------------ MARKETS ------------------
   const computedMarkets = useMemo(() => {
-    return Object.entries(productEntry.prices)
+    return Object.entries(product.prices)
       .filter(([_, priceData]) => priceData && priceData.price && !isNaN(priceData.price))
       .map(([market, priceData]) => {
         const supermarket = SUPERMARKETS.find(
@@ -101,7 +92,7 @@ export default function Product() {
           supermarket,
         };
       });
-  }, [productEntry]);
+  }, [product]);
 
   const maxPrice = useMemo(() => {
     return Math.max(...computedMarkets.map((b) => b.finalPrice));
@@ -111,9 +102,10 @@ export default function Product() {
   const handleAddToCart = () => {
     addToCart(
       {
-        id: productEntry.id, // ← CRUCIAL PARA PODER AGREGAR MÁS DE UNO
-        name: productEntry.name,
-        prices: productEntry.prices,
+        id: product.id,
+        name: product.name,
+        image: product.image,
+        prices: product.prices,
       },
       quantity
     );
@@ -131,32 +123,30 @@ export default function Product() {
     router.push("/cart");
   };
 
-  // ------------------ UI ------------------
   return (
     <AppSection>
-			<AppHeader
-				title="Producto" 
-				showBackButton={true}
-			/>
+      <AppHeader
+        title="Detalles del Producto" 
+        showBackButton={true}
+      />
 
-    	<View style={{ flex: 1 }}>
-        <View style={{ paddingHorizontal: 20 }}>
+      <View style={{ flex: 1 }}>
+        <View>
+          <Image
+            alt={product.name}
+            style={styles.image}
+            source={product.image || require('../assets/products/image_cart.png')}
+          />
           <Text style={{ fontSize: 22, marginBottom: 20 }}>
-            {productEntry.name}
+            {product.name}
           </Text>
         </View>
 
         <FlatList
-          contentContainerStyle={{
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingBottom: 120,
-          }}
           data={computedMarkets}
           keyExtractor={(item) => item.market}
           renderItem={({ item }) => {
-            const isMostExpensive =
-              item.finalPrice === maxPrice;
+            const isMostExpensive = item.finalPrice === maxPrice;
 
             return (
               <View
@@ -165,7 +155,7 @@ export default function Product() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   backgroundColor: "#f9f9f9",
-                  borderRadius: 12,
+                  borderRadius: 8,
                   padding: 10,
                   marginBottom: 10,
                 }}
@@ -176,7 +166,7 @@ export default function Product() {
                   </View>
                 )}
 
-								{item.supermarket && (
+                {item.supermarket && (
                   <View style={{ marginRight: 10 }}>
                     <Text>{item.supermarket.name}</Text>
                   </View>
@@ -223,9 +213,7 @@ export default function Product() {
             }}
           >
             <TouchableOpacity
-              onPress={() =>
-                setQuantity(Math.max(1, quantity - 1))
-              }
+              onPress={() => setQuantity(Math.max(1, quantity - 1))}
               style={{
                 padding: 10,
                 backgroundColor: "#ddd",
@@ -260,9 +248,7 @@ export default function Product() {
               alignItems: "center",
             }}
           >
-            <Text
-              style={{ color: "#fff", fontSize: 18 }}
-            >
+            <Text style={{ color: "#fff", fontSize: 18 }}>
               Agregar al carrito
             </Text>
           </TouchableOpacity>
@@ -270,23 +256,23 @@ export default function Product() {
       </View>
 
       <AppDrawer visible={showDrawer} onClose={() => setShowDrawer(false)}>
-				<View style={{ alignItems: "center", marginBottom: 24 }}>
-					<AppIcon icon="checkmark" />
-					<Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 4 }}>
-						Producto agregado
-					</Text>
-					<Text style={{ fontSize: 14, color: "#666" }}>
-						{quantity} x {productEntry.name}
-					</Text>
-				</View>
+        <View style={{ alignItems: "center", marginBottom: 24 }}>
+          <AppIcon icon="checkmark" />
+          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 4 }}>
+            Producto agregado
+          </Text>
+          <Text style={{ fontSize: 14, color: "#666" }}>
+            {quantity} x {product.name}
+          </Text>
+        </View>
 
-				<AppButton pressFunction={handleGoToCart} text="Ver carrito" />
-				<AppButton
-					pressFunction={handleContinueShopping}
-					text="Seguir comprando"
-					variant="light"
-				/>
-			</AppDrawer>
+        <AppButton pressFunction={handleGoToCart} text="Ver carrito" />
+        <AppButton
+          pressFunction={handleContinueShopping}
+          text="Seguir comprando"
+          variant="light"
+        />
+      </AppDrawer>
     </AppSection>
   );
 }

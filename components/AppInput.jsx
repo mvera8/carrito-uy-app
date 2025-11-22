@@ -37,6 +37,7 @@ export function AppInput({ value, changeFunction, placeholder = "Buscar..." }) {
         autoCapitalize="none"
         placeholderTextColor={colors.textMuted}
         style={styles.input}
+				autoFocus={false}
       />
     </View>
   );

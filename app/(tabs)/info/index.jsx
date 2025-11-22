@@ -21,13 +21,11 @@ export default function Info() {
         />
       </View>
 
-      {/* --- MENU OPTIONS --- */}
-<MenuButton label="Help" icon="chatbubble" onPress={() => router.push("/info/help")} />
-<MenuButton label="FAQ" icon="help" onPress={() => router.push("/info/faq")} />
-<MenuButton label="Invite Friends" icon="share-social" onPress={() => router.push("/info/invite")} />
-<MenuButton label="Terms of Service" icon="document-text" onPress={() => router.push("/info/terms")} />
-<MenuButton label="Privacy Policy" icon="shield" onPress={() => router.push("/info/privacy")} />
-
+			<MenuButton label="Help" icon="chatbubble" onPress={() => router.push("/info/help")} />
+			<MenuButton label="FAQ" icon="help" onPress={() => router.push("/info/faq")} />
+			<MenuButton label="Invite Friends" icon="share-social" onPress={() => router.push("/info/invite")} />
+			<MenuButton label="Terms of Service" icon="document-text" onPress={() => router.push("/info/terms")} />
+			<MenuButton label="Privacy Policy" icon="shield" onPress={() => router.push("/info/privacy")} />
     </AppSection>
   );
 }
@@ -45,7 +43,6 @@ function MenuButton({ label, icon, onPress }) {
         <AppIcon icon={icon} size={20} color={colors.text} />
         <Text style={[styles.rowText, { color: colors.text }]}>{label}</Text>
       </View>
-
 
       <AppIcon icon="chevron-forward-outline" variant="transparent" />
     </TouchableOpacity>
