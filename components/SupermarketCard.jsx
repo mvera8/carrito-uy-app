@@ -8,9 +8,6 @@ export function SupermarketCard({ card }) {
         style={styles.card_image}
         source={card.image}
     	/>
-			<View style={styles.text_container}>
-				<Text style={styles.card_title}>{card.name}</Text>
-			</View>
    </View>
   );
 }
@@ -29,17 +26,4 @@ const styles = StyleSheet.create({
     height: 70,
 		backgroundColor: "white"
   },
-  text_container:{
-    position: "absolute",
-    width: 100,
-    height: 30,
-    bottom:0,
-    padding: 5,
-    backgroundColor: "rgba(0,0,0, 0.3)",
-    borderBottomLeftRadius : 10,
-    borderBottomRightRadius: 10
-  },
-  card_title: {
-     color: "white",
-  }
 });

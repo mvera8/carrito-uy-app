@@ -18,6 +18,8 @@ import { AppSection } from "../components/AppSection";
 import { AppHeader } from "../components/AppHeader";
 import { findProduct } from "../lib/getProducts";
 import useTheme from "../hooks/useTheme";
+import { TextTitle } from "../components/TextTitle";
+import { AppPublicidad } from "../components/AppPublicidad";
 
 export default function Product() {
   const router = useRouter();
@@ -28,7 +30,7 @@ export default function Product() {
 			alignItems: "center",
       backgroundColor: colors.primary,
 			paddingTop: insets.top,
-			padding: 10
+			padding: 20
     },
 		image: {
 			display: "block",
@@ -95,7 +97,8 @@ export default function Product() {
           promo: priceData.promo,
           supermarket,
         };
-      });
+      })
+      .sort((a, b) => a.finalPrice - b.finalPrice);
   }, [product]);
 
   const maxPrice = useMemo(() => {
@@ -130,6 +133,9 @@ export default function Product() {
   return (
 		<>
 		<View style={styles.imageContainer}>
+			<AppHeader 
+				showBackButton={true}
+			/>
 			<Image
 				alt={product.name}
 				style={styles.image}
@@ -138,16 +144,22 @@ export default function Product() {
 		</View>
     <AppSection style={{ paddingTop: 20 }}>
       <View style={{ flex: 1 }}>
-        <View>
-          <Text style={{ fontSize: 22, marginBottom: 20 }}>
-            {product.name}
-          </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 20,
+						gap: 10,
+          }}
+        >
+					<TextTitle style={{ flex: 1 }}>{product.name}</TextTitle>
 
-					<View
+          <View
             style={{
               flexDirection: "row",
+              alignItems: "center",
               justifyContent: "center",
-              marginBottom: 20,
             }}
           >
             <TouchableOpacity
@@ -181,22 +193,30 @@ export default function Product() {
         <FlatList
           data={computedMarkets}
           keyExtractor={(item) => item.market}
+					ListHeaderComponent={() => (
+            <View style={{ marginBottom: 10 }}>
+              <AppPublicidad />
+							<Text style={{ fontSize: 14, color: "#666" }}>Precio en supermercados:</Text>
+            </View>
+          )}
           renderItem={({ item }) => {
             const isMostExpensive = item.finalPrice === maxPrice;
 
             return (
-              <View>
-                {item.supermarket && (
-                  <View style={{ marginRight: 10 }}>
-                    <SupermarketCard card={item.supermarket} />
-                  </View>
-                )}
+              <View style={{ marginBottom: 10, backgroundColor: colors.surface, padding: 10, borderRadius: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+									{item.supermarket && (
+										<View style={{ marginRight: 10 }}>
+											<SupermarketCard card={item.supermarket} />
+										</View>
+									)}
 
-                {item.supermarket && (
-                  <View style={{ marginRight: 10 }}>
-                    <Text>{item.supermarket.name}</Text>
-                  </View>
-                )}
+									{item.supermarket && (
+										<View style={{ marginRight: 10 }}>
+											<TextTitle>{item.supermarket.name}</TextTitle>
+										</View>
+									)}
+								</View>
 
                 <View style={{ alignItems: "flex-end" }}>
                   {item.promo && item.listPrice && (
@@ -243,11 +263,9 @@ export default function Product() {
       </View>
 
       <AppDrawer visible={showDrawer} onClose={() => setShowDrawer(false)}>
-        <View style={{ alignItems: "center", marginBottom: 24 }}>
+        <View style={{ alignItems: "center", marginBottom: 24, gap: 10 }}>
           <AppIcon icon="checkmark" />
-          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 4 }}>
-            Producto agregado
-          </Text>
+					<TextTitle>Producto agregado</TextTitle>
           <Text style={{ fontSize: 14, color: "#666" }}>
             {quantity} x {product.name}
           </Text>
