@@ -2,6 +2,7 @@
 import { Text } from "react-native";
 import { AppSection } from "../../../components/AppSection";
 import { AppHeader } from "../../../components/AppHeader";
+import { AppContainer } from "../../../components/AppContainer";
 
 export default function Help() {
   return (
@@ -10,8 +11,9 @@ export default function Help() {
 				title="Ayuda" 
 				showBackButton={true}
 			/>
-
-      <Text>help</Text>
+			<AppContainer>
+      	<Text>help</Text>
+			</AppContainer>
     </AppSection>
   );
 }

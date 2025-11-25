@@ -23,6 +23,9 @@ Logos:
 https://logoteca.uy/
 https://react-svgr.com/
 
+ICons:
+https://www.streamlinehq.com/icons/flex-flat-style?icon=ico_uEcy8ALYJSIJrlwj
+
 Supermercados:
 https://www.tata.com.uy/
 https://www.tiendainglesa.com.uy/
@@ -36,13 +39,16 @@ AI:
 https://chatgpt.com/c/69206993-037c-8328-8510-84378ecba0c8
 
 Tareas:
+zustand - guardar getting started page
 productos buscados home
-productos escaneados DB
 imagenes? - https://www.thiings.co/things/puffed-rice-snack
 guardar datos del escaneo, si esta o no el producto
+font: Inter?
+quick actions
 
 Despues:
 categorias, filtrar en home page
+
 
 ----
 

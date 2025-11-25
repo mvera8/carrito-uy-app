@@ -1,10 +1,16 @@
-import { Text } from 'react-native'
-import { AppSection } from '../../../components/AppSection';
+import { Text } from "react-native";
+import { AppSection } from "../../../components/AppSection";
+import { AppHeader } from "../../../components/AppHeader";
 
 export default function Terms() {
-	return (
-		<AppSection>
-			<Text>help</Text>
-		</AppSection>
-	)
+  return (
+    <AppSection>
+			<AppHeader 
+				title="Términos de Servicios" 
+				showBackButton={true}
+			/>
+
+      <Text>Terms</Text>
+    </AppSection>
+  );
 }

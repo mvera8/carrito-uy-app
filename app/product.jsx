@@ -17,25 +17,27 @@ import { AppDrawer } from "../components/AppDrawer";
 import { AppSection } from "../components/AppSection";
 import { AppHeader } from "../components/AppHeader";
 import { findProduct } from "../lib/getProducts";
+import { TextTitle } from "../components/TextTitle";
+import { AppPublicidad } from "../components/AppPublicidad";
+import { TextSmall } from "../components/TextSmall";
+import { AppFixedBottom } from "../components/AppFixedBottom";
+import { AppContainer } from "../components/AppContainer";
 import useTheme from "../hooks/useTheme";
 
 export default function Product() {
   const router = useRouter();
-	const { colors } = useTheme();
+	const { colors, insets } = useTheme();
 
 	const styles = StyleSheet.create({
-    image: {
-      backgroundColor: "white",
-      borderRadius: 99,
-      height: 44,
-      marginRight: 30,
-      width: 44,
+		imageContainer: {
+			alignItems: "center",
+      backgroundColor: colors.primary,
+			paddingTop: insets.top,
     },
-		container: {
-      alignItems: "center",
-    },
-    text: {
-      color: colors.text,
+		image: {
+			display: "block",
+      height: 200,
+			width: 200
     },
   });
 
@@ -62,12 +64,14 @@ export default function Product() {
 
   if (!product) {
     return (
-      <AppSection style={styles.container}>
+      <AppSection>
 				<AppHeader 
 					title="Error" 
 					showBackButton={true}
 				/>
-        <Text>No se encontró el producto.</Text>
+				<AppContainer>
+					<Text>No se encontró el producto.</Text>
+				</AppContainer>
       </AppSection>
     );
   }
@@ -91,7 +95,8 @@ export default function Product() {
           promo: priceData.promo,
           supermarket,
         };
-      });
+      })
+      .sort((a, b) => a.finalPrice - b.finalPrice);
   }, [product]);
 
   const maxPrice = useMemo(() => {
@@ -124,53 +129,92 @@ export default function Product() {
   };
 
   return (
-    <AppSection>
-      <AppHeader
-        title="Detalles del Producto" 
-        showBackButton={true}
-      />
+		<>
+		<View style={styles.imageContainer}>
+			<AppHeader 
+				showBackButton={true}
+			/>
+			<Image
+				alt={product.name}
+				style={styles.image}
+				source={product.image || require('../assets/products/image_cart.png')}
+			/>
+		</View>
+    <AppSection style={{ paddingTop: 20 }}>
+      <AppContainer>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 20,
+						gap: 10,
+          }}
+        >
+					<TextTitle style={{ flex: 1 }}>{product.name}</TextTitle>
 
-      <View style={{ flex: 1 }}>
-        <View>
-          <Image
-            alt={product.name}
-            style={styles.image}
-            source={product.image || require('../assets/products/image_cart.png')}
-          />
-          <Text style={{ fontSize: 22, marginBottom: 20 }}>
-            {product.name}
-          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => setQuantity(Math.max(1, quantity - 1))}
+              style={{
+                padding: 10,
+                backgroundColor: "#ddd",
+                borderRadius: 6,
+                marginHorizontal: 10,
+              }}
+            >
+              <Text>−</Text>
+            </TouchableOpacity>
+
+            <Text>{quantity}</Text>
+
+            <TouchableOpacity
+              onPress={() => setQuantity(quantity + 1)}
+              style={{
+                padding: 10,
+                backgroundColor: "#ddd",
+                borderRadius: 6,
+                marginHorizontal: 10,
+              }}
+            >
+              <Text>+</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <FlatList
           data={computedMarkets}
           keyExtractor={(item) => item.market}
+					ListHeaderComponent={() => (
+            <View style={{ marginBottom: 10 }}>
+              <AppPublicidad />
+							<TextSmall>Precio en supermercados:</TextSmall>
+            </View>
+          )}
           renderItem={({ item }) => {
             const isMostExpensive = item.finalPrice === maxPrice;
 
             return (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  backgroundColor: "#f9f9f9",
-                  borderRadius: 8,
-                  padding: 10,
-                  marginBottom: 10,
-                }}
-              >
-                {item.supermarket && (
-                  <View style={{ marginRight: 10 }}>
-                    <SupermarketCard card={item.supermarket} />
-                  </View>
-                )}
+              <View style={{ marginBottom: 10, backgroundColor: colors.surface, padding: 10, borderRadius: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+									{item.supermarket && (
+										<View style={{ marginRight: 10 }}>
+											<SupermarketCard card={item.supermarket} />
+										</View>
+									)}
 
-                {item.supermarket && (
-                  <View style={{ marginRight: 10 }}>
-                    <Text>{item.supermarket.name}</Text>
-                  </View>
-                )}
+									{item.supermarket && (
+										<View style={{ marginRight: 10 }}>
+											<TextTitle>{item.supermarket.name}</TextTitle>
+										</View>
+									)}
+								</View>
 
                 <View style={{ alignItems: "flex-end" }}>
                   {item.promo && item.listPrice && (
@@ -202,65 +246,20 @@ export default function Product() {
             );
           }}
         />
+      </AppContainer>
 
-        {/* QUANTITY + ADD */}
-        <View style={{ padding: 20, paddingBottom: 32 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginBottom: 20,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => setQuantity(Math.max(1, quantity - 1))}
-              style={{
-                padding: 10,
-                backgroundColor: "#ddd",
-                borderRadius: 6,
-                marginHorizontal: 10,
-              }}
-            >
-              <Text>−</Text>
-            </TouchableOpacity>
-
-            <Text>{quantity}</Text>
-
-            <TouchableOpacity
-              onPress={() => setQuantity(quantity + 1)}
-              style={{
-                padding: 10,
-                backgroundColor: "#ddd",
-                borderRadius: 6,
-                marginHorizontal: 10,
-              }}
-            >
-              <Text>+</Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity
-            onPress={handleAddToCart}
-            style={{
-              backgroundColor: "#000",
-              padding: 14,
-              borderRadius: 8,
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "#fff", fontSize: 18 }}>
-              Agregar al carrito
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+			<AppFixedBottom>
+				<AppButton
+					pressFunction={handleAddToCart}
+					text="Agregar al carrito"
+					variant="dark"
+				/>
+			</AppFixedBottom>
 
       <AppDrawer visible={showDrawer} onClose={() => setShowDrawer(false)}>
-        <View style={{ alignItems: "center", marginBottom: 24 }}>
+        <View style={{ alignItems: "center", marginBottom: 24, gap: 10 }}>
           <AppIcon icon="checkmark" />
-          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 4 }}>
-            Producto agregado
-          </Text>
+					<TextTitle>Producto agregado</TextTitle>
           <Text style={{ fontSize: 14, color: "#666" }}>
             {quantity} x {product.name}
           </Text>
@@ -274,5 +273,6 @@ export default function Product() {
         />
       </AppDrawer>
     </AppSection>
+		</>
   );
 }

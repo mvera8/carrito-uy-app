@@ -2,28 +2,17 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useCart } from '../../hooks/useCart';
 import { AppButton } from '../../components/AppButton';
-import useTheme from '../../hooks/useTheme';
 import { getAllMarkets, getProductPrice } from '../../lib/getProducts';
 import { AppDrawer } from '../../components/AppDrawer';
 import { AppSection } from '../../components/AppSection';
 import { AppPublicidad } from '../../components/AppPublicidad';
+import { TextSmall } from '../../components/TextSmall';
+import { AppContainer } from '../../components/AppContainer';
 
 export default function Cart() {
-  const { colors } = useTheme();
   const { cart, removeFromCart, updateQuantity } = useCart();
 
   const [showDrawer, setShowDrawer] = useState(false);
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    text: {
-      color: colors.text,
-    },
-  });
 
   // --- LÓGICA DEL CARRITO ---
   const markets = getAllMarkets();
@@ -56,94 +45,96 @@ export default function Cart() {
   if (cart.length === 0) {
     return (
       <AppSection>
-        <AppPublicidad />
-        <View style={styles.container}>
-          <Text style={styles.text}>El carrito está vacío 😢</Text>
-        </View>
+				<AppContainer>
+					<AppPublicidad />
+					<TextSmall>El carrito está vacío.</TextSmall>
+				</AppContainer>
       </AppSection>
     );
   }
 
   return (
     <AppSection>
-      {totals.map((t) => (
-        <Text key={t.market} style={{ marginVertical: 6, fontSize: 16 }}>
-          {t.market}: ${t.total.toFixed(0)}
-          {t.missing && " (faltan productos)"}
-          {bestComplete && bestComplete.market === t.market && !t.missing
-            ? " ← ⭐ Más barato con todo"
-            : ""}
-        </Text>
-      ))}
+			<AppContainer>
+				{totals.map((t) => (
+					<Text key={t.market} style={{ marginVertical: 6, fontSize: 16 }}>
+						{t.market}: ${t.total.toFixed(0)}
+						{t.missing && " (faltan productos)"}
+						{bestComplete && bestComplete.market === t.market && !t.missing
+							? " ← ⭐ Más barato con todo"
+							: ""}
+					</Text>
+				))}
 
-      <Text style={{ fontSize: 20, marginBottom: 15 }}>
-        Tu carrito ({cart.length} productos únicos)
-      </Text>
+				<Text style={{ fontSize: 20, marginBottom: 15 }}>
+					Tu carrito ({cart.length} productos únicos)
+				</Text>
 
-      <FlatList
-        data={cart}
-        keyExtractor={(item, index) => String(item.id ?? index)}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              paddingVertical: 10,
-              borderBottomWidth: 1,
-              borderColor: "#ddd",
-            }}
-          >
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.name}</Text>
-            <Text style={{ marginTop: 4 }}>Cantidad: {item.quantity}</Text>
+				<FlatList
+					data={cart}
+					keyExtractor={(item, index) => String(item.id ?? index)}
+					renderItem={({ item }) => (
+						<View
+							style={{
+								paddingVertical: 10,
+								borderBottomWidth: 1,
+								borderColor: "#ddd",
+							}}
+						>
+							<Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.name}</Text>
+							<Text style={{ marginTop: 4 }}>Cantidad: {item.quantity}</Text>
 
-            <View style={{ flexDirection: "row", marginTop: 6 }}>
-              <TouchableOpacity
-                onPress={() =>
-                  updateQuantity(item.id, Math.max(1, item.quantity - 1))
-                }
-                style={{
-                  paddingHorizontal: 12,
-                  paddingVertical: 6,
-                  backgroundColor: "#ddd",
-                  borderRadius: 6,
-                  marginRight: 10,
-                }}
-              >
-                <Text>-</Text>
-              </TouchableOpacity>
+							<View style={{ flexDirection: "row", marginTop: 6 }}>
+								<TouchableOpacity
+									onPress={() =>
+										updateQuantity(item.id, Math.max(1, item.quantity - 1))
+									}
+									style={{
+										paddingHorizontal: 12,
+										paddingVertical: 6,
+										backgroundColor: "#ddd",
+										borderRadius: 6,
+										marginRight: 10,
+									}}
+								>
+									<Text>-</Text>
+								</TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={() => updateQuantity(item.id, item.quantity + 1)}
-                style={{
-                  paddingHorizontal: 12,
-                  paddingVertical: 6,
-                  backgroundColor: "#ddd",
-                  borderRadius: 6,
-                }}
-              >
-                <Text>+</Text>
-              </TouchableOpacity>
+								<TouchableOpacity
+									onPress={() => updateQuantity(item.id, item.quantity + 1)}
+									style={{
+										paddingHorizontal: 12,
+										paddingVertical: 6,
+										backgroundColor: "#ddd",
+										borderRadius: 6,
+									}}
+								>
+									<Text>+</Text>
+								</TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={() => removeFromCart(item.id)}
-                style={{
-                  marginLeft: "auto",
-                  paddingHorizontal: 12,
-                  paddingVertical: 6,
-                  backgroundColor: "black",
-                  borderRadius: 6,
-                }}
-              >
-                <Text style={{ color: "white" }}>Eliminar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      />
+								<TouchableOpacity
+									onPress={() => removeFromCart(item.id)}
+									style={{
+										marginLeft: "auto",
+										paddingHorizontal: 12,
+										paddingVertical: 6,
+										backgroundColor: "black",
+										borderRadius: 6,
+									}}
+								>
+									<Text style={{ color: "white" }}>Eliminar</Text>
+								</TouchableOpacity>
+							</View>
+						</View>
+					)}
+				/>
 
-      <AppButton
-        pressFunction={() => setShowDrawer(true)}
-        text="Guardar lista"
-        variant="light"
-      />
+				<AppButton
+					pressFunction={() => setShowDrawer(true)}
+					text="Guardar lista"
+					variant="light"
+				/>
+			</AppContainer>
 
       <AppDrawer visible={showDrawer} onClose={() => setShowDrawer(false)}>
         <Text>Nombre Lista</Text>

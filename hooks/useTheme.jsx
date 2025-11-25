@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const DARKMODE_KEY = "@dark_ode";
+
 const lightColors = {
   bg: "#f8fafc",
   surface: "#ffffff",
@@ -30,6 +32,12 @@ const darkColors = {
   statusBarStyle: "light",
 };
 
+const appNumbers = {
+	appPadding: 20,
+	cardRadius: 8,
+	marginBottom: 10,
+};
+
 const ThemeContext = createContext(undefined);
 
 export const ThemeProvider = ({ children }) => {
@@ -37,7 +45,7 @@ export const ThemeProvider = ({ children }) => {
 	const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    AsyncStorage.getItem("darkMode").then((value) => {
+    AsyncStorage.getItem(DARKMODE_KEY).then((value) => {
       if (value) setIsDarkMode(JSON.parse(value));
     });
   }, []);
@@ -45,10 +53,10 @@ export const ThemeProvider = ({ children }) => {
   const toggleDarkMode = async () => {
     const newMode = !isDarkMode;
     setIsDarkMode(newMode);
-    await AsyncStorage.setItem("darkMode", JSON.stringify(newMode));
+    await AsyncStorage.setItem(DARKMODE_KEY, JSON.stringify(newMode));
   };
 
-  const colors = isDarkMode ? darkColors : lightColors;
+  const colors = { ...appNumbers, ...(isDarkMode ? darkColors : lightColors) };
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode, colors, insets }}>

@@ -1,23 +1,23 @@
 import { StyleSheet, View } from "react-native";
 import useTheme from "../hooks/useTheme";
 
-export function AppSection({
+export function AppContainer({
 	children,
 	style
 }) {
-	const { colors, insets } = useTheme();
+	const { colors } = useTheme();
 
 	const styles = StyleSheet.create({
-    section: {
+    container: {
 			flex: 1,
-			backgroundColor: colors.bg,
-			paddingTop: insets.top,
+			paddingLeft: colors.appPadding,
+			paddingRight: colors.appPadding,
 			...style,
 		},
   });
 
 	return (
-		<View style={styles.section}>
+		<View style={styles.container}>
 			{children}
 		</View>
 	)
