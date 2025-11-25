@@ -1,23 +1,25 @@
 import { StyleSheet, View } from "react-native";
 import useTheme from "../hooks/useTheme";
 
-export function AppSection({
+export function AppFixedBottom({
 	children,
 	style
 }) {
 	const { colors, insets } = useTheme();
 
 	const styles = StyleSheet.create({
-    section: {
-			flex: 1,
+    container: {
 			backgroundColor: colors.bg,
-			paddingTop: insets.top,
+			borderTopWidth: 1,
+      borderTopColor: "red",
+			padding: colors.appPadding,
+			paddingBottom: insets.bottom,
 			...style,
 		},
   });
 
 	return (
-		<View style={styles.section}>
+		<View style={styles.container}>
 			{children}
 		</View>
 	)

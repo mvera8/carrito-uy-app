@@ -1,55 +1,98 @@
-import { View, Text, StyleSheet } from "react-native";
+// app/index.jsx
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { AppButton } from "../components/AppButton";
 import { AppIcon } from "../components/AppIcon";
-import useTheme from "../hooks/useTheme";
 import { AppSection } from "../components/AppSection";
+import { TextSmall } from "../components/TextSmall";
+import { AppContainer } from "../components/AppContainer";
+import useTheme from "../hooks/useTheme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const ONBOARDING_KEY = "@onboarding_completed";
 
 export default function Welcome() {
   const router = useRouter();
-	const { colors, insets } = useTheme();
+  const { colors, insets } = useTheme();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleStart = () => {
-    router.replace("/(tabs)");
+  // Verificar si ya completó el onboarding
+  useEffect(() => {
+    checkOnboarding();
+  }, []);
+
+  const checkOnboarding = async () => {
+    try {
+      const value = await AsyncStorage.getItem(ONBOARDING_KEY);
+      if (value === "true") {
+        // Si ya completó el onboarding, ir directo a tabs
+        router.replace("/(tabs)");
+      } else {
+        // Mostrar pantalla de bienvenida
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Error checking onboarding:", error);
+      setIsLoading(false);
+    }
   };
 
-	const styles = StyleSheet.create({
-		title: {
-			fontSize: 40,
-			fontWeight: "bold",
-			marginBottom: 10,
-			textTransform: "capitalize",
-		},
-		text: {
-			color: "gray",
-			fontSize: 22,
-			marginBottom: 20,
-			paddingRight: 20,
-		},
-  });
+  const handleStart = async () => {
+    try {
+      // Guardar que completó el onboarding
+      await AsyncStorage.setItem(ONBOARDING_KEY, "true");
+      // Navegar a tabs
+      router.replace("/(tabs)");
+    } catch (error) {
+      console.error("Error saving onboarding:", error);
+      // Navegar de todas formas aunque falle el guardado
+      router.replace("/(tabs)");
+    }
+  };
 
-  return (
-		<AppSection style={{
-			backgroundColor: colors.primary,
+  const styles = StyleSheet.create({
+    section: {
+      backgroundColor: colors.primary,
+    },
+		container: {
 			justifyContent: "space-between",
 			paddingBottom: insets.bottom,
-		}}>
-			<View style={{ paddingTop: 20 }}>
-				<AppIcon
-					icon="cart"
-					variant="dark"
-				/>
-			</View>
+    },
+		display: {
+      fontSize: 40,
+      fontWeight: "bold",
+      marginBottom: 10,
+      textTransform: "capitalize",
+    },
+  });
 
-			<View style={{ paddingBottom: 20 }}>
-				<Text style={styles.title}>Una forma fácil de ahorrar dinero</Text>
-				<Text style={styles.text}>Descubrí en qué súper tu compra cuesta menos.</Text>
-				<AppButton
-					pressFunction={handleStart}
-					text="Comenzar"
-					variant="dark"
-				/>
-			</View>
-		</AppSection>
+  // Mostrar loading mientras verifica
+  if (isLoading) {
+    return (
+      <AppSection style={styles.container}>
+        <ActivityIndicator size="large" color="#fff" />
+      </AppSection>
+    );
+  }
+
+  return (
+    <AppSection style={styles.section}>
+			<AppContainer style={styles.container}>
+				<View>
+					<AppIcon icon="cart" variant="dark" />
+				</View>
+
+				<View>
+					<Text style={styles.display}>Una forma fácil de ahorrar dinero</Text>
+					<TextSmall style={{ marginBottom: 20 }}>Descubrí en qué súper tu compra cuesta menos.</TextSmall>
+					<AppButton
+						pressFunction={handleStart}
+						text="Comenzar"
+						variant="dark"
+					/>
+				</View>
+			</AppContainer>
+    </AppSection>
   );
 }

@@ -22,7 +22,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#9fcfb5"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.tincho8.carritouyapp"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -31,7 +38,9 @@
     "plugins": [
       "expo-router",
       "expo-barcode-scanner",
-      "expo-camera"
+      "expo-camera",
+      "expo-font",
+      "expo-asset"
     ]
   }
 }

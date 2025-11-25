@@ -1,5 +1,6 @@
+// app/(tabs)/index.jsx
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, FlatList, TouchableOpacity, Image, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { getLatestProducts } from '../../lib/getProducts';
 import { AppInput } from '../../components/AppInput';
@@ -7,39 +8,14 @@ import { AppHeader } from '../../components/AppHeader';
 import { AppSpiner } from '../../components/AppSpiner';
 import { AppSection } from '../../components/AppSection';
 import { AppPublicidad } from '../../components/AppPublicidad';
-import useTheme from '../../hooks/useTheme';
+import { CardProduct } from '../../components/CardProduct';
+import { TextSmall } from '../../components/TextSmall';
+import { AppContainer } from '../../components/AppContainer';
 
 export default function Index() {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
-  const { colors } = useTheme();
   const router = useRouter();
-
-  const styles = StyleSheet.create({
-		card: {
-			flexDirection: "row",
-			alignItems: "center",
-      backgroundColor: "rgba(255,255,255,0.1)",
-			borderColor: "gray",
-			borderStyle: "solid",
-			borderRadius: 8,
-			borderWidth: 1,
-			marginBottom: 10,
-			padding: 10,
-    },
-    text: {
-      color: colors.text,
-			fontSize: 16,
-    	fontWeight: "500",
-    },
-		image: {
-			backgroundColor: "white",
-			borderRadius: 99,
-			height: 60,
-			marginRight: 30,
-      width: 60,
-    },
-  });
 
   useEffect(() => {
     getLatestProducts().then((products) => {
@@ -47,7 +23,7 @@ export default function Index() {
     });
   }, []);
 
-	// Filtrado por nombre
+  // Filtrado por nombre
   const filtered =
     search.length > 0
       ? products.filter((p) =>
@@ -64,25 +40,18 @@ export default function Index() {
 
   return (
     <AppSection>
-      <AppHeader 
-        title="+Barato" 
-      />
+			<AppHeader title="+Barato" />
+			<AppContainer>
+				<AppPublicidad />
 
-			<AppPublicidad />
-
-      {products.length === 0 ? (
-        <AppSpiner />
-      ) : (
-        <>
-					<AppInput
-						value={search}
-						changeFunction={setSearch}
-					/>
-          {filtered.length === 0 ? (
-						<Text style={{ color: "gray" }}>No se encontro el producto</Text>
-					) : (
-						<>
-							
+				{products.length === 0 ? (
+					<AppSpiner />
+				) : (
+					<>
+						<AppInput value={search} changeFunction={setSearch} />
+						{filtered.length === 0 ? (
+							<TextSmall>No se encontró el producto</TextSmall>
+						) : (
 							<FlatList
 								data={filtered}
 								keyExtractor={(item) => item.id}
@@ -94,29 +63,18 @@ export default function Index() {
 											: "N/A";
 
 									return (
-										<TouchableOpacity
-											onPress={() => handleSelect(item)}
-											style={styles.card}
-										>
-											<Image
-												alt={item.name}
-												style={styles.image}
-												source={item.image || require('../../assets/products/image_cart.png')}
-											/>
-											<View>
-												<Text style={styles.text}>{item.name}</Text>
-												<Text style={{ color: "gray" }}>
-													Desde ${minPrice}
-												</Text>
-											</View>
-										</TouchableOpacity>
+										<CardProduct
+											product={item}
+											minPrice={minPrice}
+											pressFunction={() => handleSelect(item)}
+										/>
 									);
 								}}
 							/>
-						</>
-					)}
-        </>
-      )}
+						)}
+					</>
+				)}
+			</AppContainer>
     </AppSection>
   );
 }

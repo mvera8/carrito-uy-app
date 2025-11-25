@@ -1,66 +1,64 @@
 // app/(tabs)/info/index.jsx
-import { View, Text, TouchableOpacity, StyleSheet, Switch } from "react-native";
+import { FlatList } from "react-native";
 import { router } from "expo-router";
-import { AppIcon } from "../../../components/AppIcon";
 import { AppSection } from "../../../components/AppSection";
+import { MenuButton } from "../../../components/MenuButton";
+import { AppHeader } from "../../../components/AppHeader";
+import { MenuSwitch } from "../../../components/MenuSwitch";
 import useTheme from "../../../hooks/useTheme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppContainer } from "../../../components/AppContainer";
 
+const menu = [
+  { label: "Ayuda", icon: "chatbubble", link: "/info/help" },
+  { label: "Preguntas Frecuentes", icon: "help-circle", link: "/info/faq" },
+  { label: "Invitar Amigos", icon: "share-social", link: "/info/invite" },
+  { label: "Términos de Servicios", icon: "document-text", link: "/info/terms" },
+  { label: "Política de Privacidad", icon: "shield", link: "/info/privacy" },
+];
 
 export default function Info() {
-  const { isDarkMode, toggleDarkMode, colors } = useTheme();
+  const { toggleDarkMode, isDarkMode } = useTheme();
+
+	async function handleReload() {
+    try {
+      await AsyncStorage.removeItem("@onboarding_completed");
+      // Opcional: reiniciar la app o navegar al inicio
+      router.replace("/");
+    } catch (error) {
+      console.error("Error removing onboarding:", error);
+    }
+  }
 
   return (
     <AppSection>
-      <View style={[styles.row, { borderBottomColor: colors.border }]}>
-        <Text style={[styles.rowText, { color: colors.text }]}>Dark Mode</Text>
-        <Switch
-          value={isDarkMode}
-          onValueChange={toggleDarkMode}
-          thumbColor={"#fff"}
-          trackColor={{ false: colors.border, true: colors.primary }}
-        />
-      </View>
+			<AppHeader
+				title="Información"
+			/>
+			<AppContainer>
+				<MenuSwitch
+					label={isDarkMode ? "Modo claro" : "Modo oscuro" }
+					value={isDarkMode}
+					onValueChange={toggleDarkMode}
+				/>
 
-			<MenuButton label="Help" icon="chatbubble" onPress={() => router.push("/info/help")} />
-			<MenuButton label="FAQ" icon="help" onPress={() => router.push("/info/faq")} />
-			<MenuButton label="Invite Friends" icon="share-social" onPress={() => router.push("/info/invite")} />
-			<MenuButton label="Terms of Service" icon="document-text" onPress={() => router.push("/info/terms")} />
-			<MenuButton label="Privacy Policy" icon="shield" onPress={() => router.push("/info/privacy")} />
+				<FlatList
+					data={menu}
+					keyExtractor={(item, index) => index.toString()}
+					renderItem={({ item }) => (
+						<MenuButton
+							label={item.label}
+							icon={item.icon}
+							onPress={() => router.push(item.link)}
+						/>
+					)}
+				/>
+
+				<MenuButton
+					label="Reload"
+					onPress={() => handleReload()}
+				/>
+			</AppContainer>
     </AppSection>
   );
 }
-
-/* ------------------------- COMPONENTE REUSABLE ------------------------- */
-function MenuButton({ label, icon, onPress }) {
-  const { colors } = useTheme();
-
-  return (
-    <TouchableOpacity
-      style={[styles.row, { borderBottomColor: colors.border }]}
-      onPress={onPress}
-    >
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-        <AppIcon icon={icon} size={20} color={colors.text} />
-        <Text style={[styles.rowText, { color: colors.text }]}>{label}</Text>
-      </View>
-
-      <AppIcon icon="chevron-forward-outline" variant="transparent" />
-    </TouchableOpacity>
-  );
-}
-
-/* ------------------------------- STYLES ------------------------------- */
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 18,
-    borderBottomWidth: 1,
-  },
-
-  rowText: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-});

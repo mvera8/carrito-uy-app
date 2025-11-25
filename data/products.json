@@ -135,6 +135,19 @@
 		]
 	},
 	{
+		"name": "Refresco PEPSI Black 2 L",
+		"image": "image_pepsi.png",
+		"ean13": "7734284002315",
+		"urls": [
+			"https://www.tata.com.uy/pepsi-black-pet-2-l-155064/p",
+			"https://www.tiendainglesa.com.uy/supermercado/refresco-pepsi-black-2-l.producto?1543148",
+			"https://www.eldorado.com.uy/refresco-pepsi-black-2lt/p",
+			"https://www.devoto.com.uy/refresco-pepsi-black-2-l-590886/p",
+			"https://www.geant.com.uy/refresco-pepsi-black-2-l-590886/p",
+			"https://www.disco.com.uy/refresco-pepsi-black-2-l-590886/p"
+		]
+	},
+	{
 		"name": "Repelente para Mosquitos OFF! Extra Duración Aerosol 290cc",
 		"urls": [
 			"https://www.tiendainglesa.com.uy/supermercado/repelente-para-mosquitos-off-extra-duracion-aerosol-290-cc.producto?407563",

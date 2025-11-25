@@ -41,7 +41,7 @@ export function AppButton({
         padding: 20,
         borderRadius: 999,
         alignItems: "center",
-        marginBottom: 12,
+        marginBottom: colors.marginBottom,
         ...style,
       }}
     >

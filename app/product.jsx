@@ -17,9 +17,12 @@ import { AppDrawer } from "../components/AppDrawer";
 import { AppSection } from "../components/AppSection";
 import { AppHeader } from "../components/AppHeader";
 import { findProduct } from "../lib/getProducts";
-import useTheme from "../hooks/useTheme";
 import { TextTitle } from "../components/TextTitle";
 import { AppPublicidad } from "../components/AppPublicidad";
+import { TextSmall } from "../components/TextSmall";
+import { AppFixedBottom } from "../components/AppFixedBottom";
+import { AppContainer } from "../components/AppContainer";
+import useTheme from "../hooks/useTheme";
 
 export default function Product() {
   const router = useRouter();
@@ -30,18 +33,11 @@ export default function Product() {
 			alignItems: "center",
       backgroundColor: colors.primary,
 			paddingTop: insets.top,
-			padding: 20
     },
 		image: {
 			display: "block",
       height: 200,
 			width: 200
-    },
-		container: {
-      alignItems: "center",
-    },
-    text: {
-      color: colors.text,
     },
   });
 
@@ -68,12 +64,14 @@ export default function Product() {
 
   if (!product) {
     return (
-      <AppSection style={styles.container}>
+      <AppSection>
 				<AppHeader 
 					title="Error" 
 					showBackButton={true}
 				/>
-        <Text>No se encontró el producto.</Text>
+				<AppContainer>
+					<Text>No se encontró el producto.</Text>
+				</AppContainer>
       </AppSection>
     );
   }
@@ -143,7 +141,7 @@ export default function Product() {
 			/>
 		</View>
     <AppSection style={{ paddingTop: 20 }}>
-      <View style={{ flex: 1 }}>
+      <AppContainer>
         <View
           style={{
             flexDirection: "row",
@@ -196,7 +194,7 @@ export default function Product() {
 					ListHeaderComponent={() => (
             <View style={{ marginBottom: 10 }}>
               <AppPublicidad />
-							<Text style={{ fontSize: 14, color: "#666" }}>Precio en supermercados:</Text>
+							<TextSmall>Precio en supermercados:</TextSmall>
             </View>
           )}
           renderItem={({ item }) => {
@@ -248,19 +246,15 @@ export default function Product() {
             );
           }}
         />
+      </AppContainer>
 
-        {/* QUANTITY + ADD */}
-        <View style={{ padding: 20, paddingBottom: 32 }}>
-          
-
-
-					<AppButton
-						pressFunction={handleAddToCart}
-						text="Agregar al carrito"
-						variant="dark"
-					/>
-        </View>
-      </View>
+			<AppFixedBottom>
+				<AppButton
+					pressFunction={handleAddToCart}
+					text="Agregar al carrito"
+					variant="dark"
+				/>
+			</AppFixedBottom>
 
       <AppDrawer visible={showDrawer} onClose={() => setShowDrawer(false)}>
         <View style={{ alignItems: "center", marginBottom: 24, gap: 10 }}>
