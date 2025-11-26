@@ -4,7 +4,7 @@ import { AppIcon } from "../components/AppIcon";
 import useTheme from "../hooks/useTheme";
 
 export function AppInput({ value, changeFunction, placeholder = "Buscar..." }) {
-  const { colors } = useTheme();
+  const { colors, isDarkMode } = useTheme();
 
 	const styles = StyleSheet.create({
 		container: {
@@ -29,7 +29,7 @@ export function AppInput({ value, changeFunction, placeholder = "Buscar..." }) {
 
   return (
     <View style={styles.container}>
-			<AppIcon icon="search" variant="transparent" />
+			<AppIcon icon="search" variant={isDarkMode ? "transparentLight" : "transparent" } />
       <TextInput
         placeholder={placeholder}
         value={value}

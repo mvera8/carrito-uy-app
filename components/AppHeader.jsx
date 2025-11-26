@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import useTheme from "../hooks/useTheme";
+import { TextTitle } from "./TextTitle";
+import { AppIcon } from "./AppIcon";
 
 export function AppHeader({ 
   title, 
@@ -17,6 +19,8 @@ export function AppHeader({
 	
 	const styles = StyleSheet.create({
 		container: {
+			paddingLeft: colors.appPadding,
+			paddingRight: colors.appPadding,
 			height: 56,
 			flexDirection: "row",
 			alignItems: "center",
@@ -36,20 +40,6 @@ export function AppHeader({
 			justifyContent: "center",
 			alignItems: "flex-end",
 		},
-		button: {
-			padding: 8,
-			justifyContent: "center",
-			alignItems: "center",
-		},
-		backIcon: {
-			fontSize: 24,
-			color: colors.text,
-		},
-		title: {
-			fontSize: 18,
-			fontWeight: "600",
-			color: colors.text,
-		},
 	});
 
   return (
@@ -58,16 +48,16 @@ export function AppHeader({
       <View style={styles.leftSection}>
         {showBackButton && (
           <TouchableOpacity onPress={handleBackPress} style={styles.button}>
-            <Text style={styles.backIcon}>←</Text>
+            <AppIcon icon="arrow-back" variant="transparent" />
           </TouchableOpacity>
         )}
       </View>
 
       {/* Título centrado */}
       <View style={styles.centerSection}>
-        <Text style={styles.title} numberOfLines={1}>
+        <TextTitle numberOfLines={1}>
           {title}
-        </Text>
+        </TextTitle>
       </View>
 
       {/* Botón derecho (Icono personalizado) */}

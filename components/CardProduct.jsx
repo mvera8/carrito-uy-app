@@ -1,6 +1,7 @@
-import { Text, StyleSheet, TouchableOpacity, Image, View } from "react-native";
-import useTheme from "../hooks/useTheme";
+import { StyleSheet, TouchableOpacity, Image, View } from "react-native";
 import { TextSmall } from "./TextSmall";
+import { TextTitle } from "./TextTitle";
+import useTheme from "../hooks/useTheme";
 
 export function CardProduct({
   pressFunction,
@@ -21,17 +22,17 @@ export function CardProduct({
       marginBottom: 10,
       padding: 10,
     },
-    text: {
-      color: colors.text,
-      fontSize: 16,
-      fontWeight: "500",
-    },
     image: {
       backgroundColor: "white",
       borderRadius: 99,
       height: 60,
-      marginRight: 30,
+      marginRight: 15,
       width: 60,
+      flexShrink: 0,
+    },
+    textContainer: {
+      flex: 1,
+      flexShrink: 1,
     },
   });
 
@@ -45,11 +46,11 @@ export function CardProduct({
         style={styles.image}
         source={product.image || require('../assets/products/image_cart.png')}
       />
-      <View>
-        <Text style={styles.text}>{product.name}</Text>
-				<TextSmall>
-					Desde ${minPrice}
-				</TextSmall>
+      <View style={styles.textContainer}>
+        <TextTitle numberOfLines={1}>{product.name}</TextTitle>
+        <TextSmall>
+          Desde ${minPrice}
+        </TextSmall>
       </View>
     </TouchableOpacity>
   );

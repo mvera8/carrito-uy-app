@@ -1,8 +1,8 @@
-import { Text, View, Switch, StyleSheet } from "react-native";
+import { View, Switch, StyleSheet } from "react-native";
+import { TextTitle } from "./TextTitle";
 import useTheme from "../hooks/useTheme";
 
 export function MenuSwitch({
-	label,
 	value,
 	onValueChange
 }) {
@@ -17,18 +17,11 @@ export function MenuSwitch({
 			borderBottomWidth: 1,
 			borderBottomColor: colors.border,
 		},
-		rowText: {
-			color: colors.text ,
-			fontSize: 16,
-			fontWeight: "500",
-			textTransform: "capitalize",
-			minWidth: 200
-		},
 	});
 
 	return (
 		<View style={[styles.row, { borderBottomColor: colors.border }]}>
-			<Text style={[styles.rowText, { color: colors.text }]}>Dark Mode</Text>
+			<TextTitle>Dark Mode</TextTitle>
 			<Switch
 				value={value}
 				onValueChange={onValueChange}

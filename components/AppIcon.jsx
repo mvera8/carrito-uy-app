@@ -7,8 +7,6 @@ export function AppIcon({
 }) {
 	const { colors } = useTheme();
 
-	const isPrimary = variant === "primary";
-
 	// Definir estilos según variante
   const getVariantStyles = () => {
     switch (variant) {
@@ -20,7 +18,12 @@ export function AppIcon({
       case "transparent":
         return {
           backgroundColor: "transparent",
-					textColor: colors.primary,
+					textColor: "black",
+        };
+			case "transparentLight":
+        return {
+          backgroundColor: "transparent",
+					textColor: "white",
         };
       case "primary":
       default:

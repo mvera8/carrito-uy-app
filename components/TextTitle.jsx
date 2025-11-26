@@ -3,7 +3,8 @@ import useTheme from "../hooks/useTheme";
 
 export function TextTitle({ 
   children, 
-  style
+  style,
+  numberOfLines
 }) {
 	const { colors } = useTheme();
 
@@ -19,7 +20,10 @@ export function TextTitle({
 	});
 
 	return (
-		<Text style={styles.text_title}>
+		<Text 
+			style={styles.text_title}
+			numberOfLines={numberOfLines}
+		>
 			{children}
 		</Text>
 	)
