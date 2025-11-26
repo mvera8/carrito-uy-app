@@ -11,6 +11,7 @@ export function TextSmall({
 		text_small: {
 			color: "gray",
 			fontSize: 16,
+   		lineHeight: 20,
 			marginBottom: 4,
 			...style,
 		},

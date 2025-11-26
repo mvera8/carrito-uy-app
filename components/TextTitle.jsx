@@ -12,6 +12,7 @@ export function TextTitle({
 		text_title: {
 			color: colors.text,
 			fontSize: 20,
+			lineHeight: 25,
 			fontWeight: "bold",
 			marginBottom: 4,
 			marginTop: 4,
