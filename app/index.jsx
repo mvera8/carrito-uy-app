@@ -9,6 +9,8 @@ import { TextSmall } from "../components/TextSmall";
 import { AppContainer } from "../components/AppContainer";
 import useTheme from "../hooks/useTheme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppLink } from "../components/AppLink";
+import { TextTitle } from "../components/TextTitle";
 
 const ONBOARDING_KEY = "@onboarding_completed";
 
@@ -51,6 +53,10 @@ export default function Welcome() {
     }
   };
 
+	const handleTerms = async () => {
+    router.replace("/info/terms");
+  };
+
   const styles = StyleSheet.create({
     section: {
       backgroundColor: colors.primary,
@@ -83,12 +89,18 @@ export default function Welcome() {
 
 				<View>
 					<Text style={styles.display}>Una forma fácil de ahorrar dinero</Text>
-					<TextSmall style={{ marginBottom: 20 }}>Descubrí en qué súper tu compra cuesta menos.</TextSmall>
+					<TextTitle style={{ marginBottom: 20 }}>Descubrí en qué súper tu compra cuesta menos.</TextTitle>
 					<AppButton
+						style={{ marginBottom: 30 }}
 						pressFunction={handleStart}
 						text="Comenzar"
 						variant="dark"
 					/>
+
+					<View>
+						<TextSmall style={{ textAlign: "center", display: "block" }}>Continuando estas aceptando nuestros</TextSmall>
+						<AppLink style={{ textAlign: "center", display: "block" }} pressFunction={handleTerms} text="terminos y condiciones." />
+					</View>
 				</View>
 			</AppContainer>
     </AppSection>

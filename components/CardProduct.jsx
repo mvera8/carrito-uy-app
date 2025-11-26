@@ -47,7 +47,7 @@ export function CardProduct({
         source={product.image || require('../assets/products/image_cart.png')}
       />
       <View style={styles.textContainer}>
-        <TextTitle numberOfLines={1}>{product.name}</TextTitle>
+        <TextTitle numberOfLines={2}>{product.name}</TextTitle>
         <TextSmall>
           Desde ${minPrice}
         </TextSmall>

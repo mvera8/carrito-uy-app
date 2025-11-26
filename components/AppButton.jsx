@@ -39,6 +39,8 @@ export function AppButton({
       style={{
         backgroundColor: variantStyles.backgroundColor,
         padding: 20,
+				paddingBottom: 15,
+				paddingTop: 15,
         borderRadius: 999,
         alignItems: "center",
         marginBottom: colors.marginBottom,

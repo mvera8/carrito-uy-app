@@ -11,6 +11,9 @@ export default function Terms() {
 			/>
 
       <Text>Terms</Text>
+			<Text>No registros</Text>
+			<Text>Guardamos data escaneada. pero anonima</Text>
+			<Text>Monetización</Text>
     </AppSection>
   );
 }
