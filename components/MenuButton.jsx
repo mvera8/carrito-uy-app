@@ -1,6 +1,7 @@
 import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AppIcon } from "./AppIcon";
 import useTheme from "../hooks/useTheme";
+import { TextTitle } from "./TextTitle";
 
 export function MenuButton({
 	label,
@@ -8,7 +9,7 @@ export function MenuButton({
 	onPress,
 	hideArrow = false
 }) {
-	const { colors } = useTheme();
+	const { colors, isDarkMode } = useTheme();
 
 	const styles = StyleSheet.create({
 		row: {
@@ -19,13 +20,6 @@ export function MenuButton({
 			borderBottomWidth: 1,
 			borderBottomColor: colors.border,
 		},
-		rowText: {
-			color: colors.text ,
-			fontSize: 16,
-			fontWeight: "500",
-			textTransform: "capitalize",
-			minWidth: 200
-		},
 	});
 
 	return (
@@ -34,11 +28,11 @@ export function MenuButton({
       onPress={onPress}
     >
       <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-				{icon && <AppIcon icon={icon} size={20} color={colors.text} />}
-        <Text style={styles.rowText}>{label}</Text>
+				{icon && <AppIcon icon={icon} />}
+        <TextTitle>{label}</TextTitle>
       </View>
 
-			{!hideArrow && <AppIcon icon="chevron-forward-outline" variant="transparent" />}
+			{!hideArrow && <AppIcon icon="chevron-forward-outline" variant={isDarkMode ? "transparentLight" : "transparent" } />}
     </TouchableOpacity>
 	)
 }

@@ -1,7 +1,7 @@
 // app/(tabs)/index.jsx
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import { getLatestProducts } from '../../lib/getProducts';
 import { AppInput } from '../../components/AppInput';
 import { AppHeader } from '../../components/AppHeader';
@@ -11,11 +11,11 @@ import { AppPublicidad } from '../../components/AppPublicidad';
 import { CardProduct } from '../../components/CardProduct';
 import { TextSmall } from '../../components/TextSmall';
 import { AppContainer } from '../../components/AppContainer';
+import { AppButton } from '../../components/AppButton';
 
 export default function Index() {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
-  const router = useRouter();
 
   useEffect(() => {
     getLatestProducts().then((products) => {
@@ -43,7 +43,6 @@ export default function Index() {
 			<AppHeader title="+Barato" />
 			<AppContainer>
 				<AppPublicidad />
-
 				{products.length === 0 ? (
 					<AppSpiner />
 				) : (

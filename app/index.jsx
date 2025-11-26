@@ -79,9 +79,7 @@ export default function Welcome() {
   return (
     <AppSection style={styles.section}>
 			<AppContainer style={styles.container}>
-				<View>
-					<AppIcon icon="cart" variant="dark" />
-				</View>
+				<AppIcon icon="cart" variant="dark" />
 
 				<View>
 					<Text style={styles.display}>Una forma fácil de ahorrar dinero</Text>

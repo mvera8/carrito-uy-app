@@ -4,8 +4,16 @@ import useTheme, { ThemeProvider } from "../hooks/useTheme";
 import { StatusBar } from "expo-status-bar";
 import { CartProvider } from "../hooks/useCart";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useFonts } from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function RootLayout() {
+  const [loaded] = useFonts({
+    ...Ionicons.font,
+  });
+
+  if (!loaded) return null;
+
   return (
     <SafeAreaProvider>
       <ThemeProvider>
