@@ -31,46 +31,53 @@ describe('Scraper de Productos', function() {
             // Obtener el hostname de la tienda
             const tienda = new URL(url).hostname.replace('www.', '');
 
-            let metaMatch = "";
-            // let priceMatch = "";
+            if (tienda === 'tiendainglesa.com.uy') {
+              return cy.task("puppeteerScrapeTI", { url, waitFor: 6000, debug: true })
+                .then((res) => {
+                  // if (res.error) cy.task("log", `TI Error: ${res.error}`);
+                  // if (res.html) cy.writeFile("debug-ti.html", res.html);
 
-            if (tienda === "tiendainglesa.com.uy") {
-              cy.task('log', `  Tienda: ${tienda} - No buscadoooo`);
-            } else if (tienda === "elclon.com.uy") {
-              metaMatch = html.match(/<meta[^>]*itemprop="price"[^>]*content="([^"]+)"/);
+                  cy.task('log', `  Tienda: ${tienda} - Precio: ${res.price || 'No encontrado'}`);
+                  cy.task('log', `  Tienda: ${tienda} - Promo: ${res.listPrice || 'No tiene promo'}`);
 
-            } else if (tienda === "tata.com.uy") {
-              metaMatch = html.match(/<meta[^>]*property="product:price:amount"[^>]*content="([^"]+)"/);
-
-              cy.task("puppeteerScrape", {
-                url,
-                selector: 'span[data-testid="list-price"]'
-              }).then(value => {
-                cy.task("log", "List Price: " + value);
-              });
-
-              cy.task("puppeteerScrape", {
-                url,
-                selector: 'span[data-testid="price"]'
-              }).then(value => {
-                cy.task("log", "Price: " + value);
-              });
-              
+                  productData.prices.push({
+                    tienda: "tiendainglesa",
+                    url,
+                    precio: res.price,
+                    promo: res.listPrice
+                  });
+                });
             } else {
-              metaMatch = html.match(/<meta[^>]*property="product:price:amount"[^>]*content="([^"]+)"/);
+              
+              cy.task("puppeteerScrape", {
+                url,
+                // elclon, geant, devoto, tata
+                selector: 'div.precios del.precio.lista span.monto, span.wTxtProductPriceBefore, span.devotouy-products-components-0-x-listPriceValue, span[data-testid="list-price"]'
+              }).then((promo) => {
 
-              
-              
+                return cy.task("puppeteerScrape", {
+                  url,
+                  selector: 'div.precios strong.precio.venta span.monto, span.wProductPrimaryPrice, .devotouy-products-components-0-x-sellingPriceWithUnitMultiplier span:last-child, span[data-testid="price"]'
+                }).then((precio) => {
+
+                  cy.task('log', `  Tienda: ${tienda} - Precio: ${precio || 'No encontrado'}`);
+                  cy.task('log', `  Tienda: ${tienda} - Promo: ${promo || 'No tiene promo'}`);
+
+                  productData.prices.push({
+                    tienda: tienda.replace('.com.uy', ''),
+                    url: url,
+                    precio: precio ? parseFloat(precio) : null,
+                    promo: promo ? parseFloat(promo) : null,
+                  });
+
+                });
+              });
+
+
             }
 
-            const precio = metaMatch ? metaMatch[1] : null;
-            cy.task('log', `  Tienda: ${tienda} - Precio: ${precio || 'No encontrado'}`);
+            
 
-            productData.prices.push({
-              tienda: tienda.replace('.com.uy', ''),
-              url: url,
-              precio: precio ? parseFloat(precio) : null,
-            });
           }); // then
         });  // it
       }); // forEach productUrls      
