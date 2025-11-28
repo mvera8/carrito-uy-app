@@ -1,16 +1,15 @@
 // app/index.jsx
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { AppButton } from "../components/AppButton";
 import { AppIcon } from "../components/AppIcon";
 import { AppSection } from "../components/AppSection";
 import { TextSmall } from "../components/TextSmall";
 import { AppContainer } from "../components/AppContainer";
+import { TextTitle } from "../components/TextTitle";
 import useTheme from "../hooks/useTheme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AppLink } from "../components/AppLink";
-import { TextTitle } from "../components/TextTitle";
 
 const ONBOARDING_KEY = "@onboarding_completed";
 
@@ -53,10 +52,6 @@ export default function Welcome() {
     }
   };
 
-	const handleTerms = async () => {
-    router.replace("/info/terms");
-  };
-
   const styles = StyleSheet.create({
     section: {
       backgroundColor: colors.primary,
@@ -70,6 +65,10 @@ export default function Welcome() {
       fontWeight: "bold",
       marginBottom: 10,
       textTransform: "capitalize",
+    },
+		link: {
+      fontWeight: "bold",
+			textDecorationLine: "underline"
     },
   });
 
@@ -89,7 +88,9 @@ export default function Welcome() {
 
 				<View>
 					<Text style={styles.display}>Una forma fácil de ahorrar dinero</Text>
-					<TextTitle style={{ marginBottom: 20 }}>Descubrí en qué súper tu compra cuesta menos.</TextTitle>
+
+					<TextTitle style={{ marginBottom: 20, color: "gray" }}>Descubrí en qué súper tu compra cuesta menos.</TextTitle>
+
 					<AppButton
 						style={{ marginBottom: 30 }}
 						pressFunction={handleStart}
@@ -98,9 +99,18 @@ export default function Welcome() {
 					/>
 
 					<View>
-						<TextSmall style={{ textAlign: "center", display: "block" }}>Continuando estas aceptando nuestros</TextSmall>
-						<AppLink style={{ textAlign: "center", display: "block" }} pressFunction={handleTerms} text="terminos y condiciones." />
+						<TextSmall style={{ textAlign: "center", display: "block" }}>
+							Continuando estas aceptando nuestros
+							<Link
+								href={'/terms/'}
+								style={styles.link}
+							>
+								{' '}
+								<Text>términos y condiciones</Text>
+							</Link>.
+						</TextSmall>
 					</View>
+
 				</View>
 			</AppContainer>
     </AppSection>

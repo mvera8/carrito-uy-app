@@ -40,7 +40,7 @@ export default function Index() {
 
   return (
     <AppSection>
-			<AppHeader title="+Barato" />
+			<AppHeader title="PagáMenos" />
 			<AppContainer>
 				<AppPublicidad />
 				{products.length === 0 ? (

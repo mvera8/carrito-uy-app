@@ -44,11 +44,11 @@ export function AppIcon({
 				backgroundColor: variantStyles.backgroundColor,
 				borderRadius: 999,
 				color: variantStyles.textColor,
-				width: 50,
-				height: 50,
+				width: 40,
+				height: 40,
 				textAlign: "center",
-				lineHeight: 50,
-				fontSize: 25,
+				lineHeight: 40,
+				fontSize: 23,
 			}}
 		/>
 	)

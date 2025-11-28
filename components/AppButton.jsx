@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
+import { Text, Pressable } from "react-native";
 import useTheme from "../hooks/useTheme";
 
 export function AppButton({ 
@@ -34,7 +34,7 @@ export function AppButton({
   const variantStyles = getVariantStyles();
   
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={pressFunction}
       style={{
         backgroundColor: variantStyles.backgroundColor,
@@ -56,6 +56,6 @@ export function AppButton({
       >
         {text}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
