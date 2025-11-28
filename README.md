@@ -1,5 +1,7 @@
 # carrito-uy-app
 
+npx expo run:ios
+
 ## Scrape
 
 # Modo interactivo
