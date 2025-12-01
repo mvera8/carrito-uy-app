@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { router } from 'expo-router';
-import { getLatestProducts } from '../../lib/getProducts';
+import { getProducts } from '../../lib/getProducts';
 import { AppInput } from '../../components/AppInput';
 import { AppHeader } from '../../components/AppHeader';
 import { AppSpiner } from '../../components/AppSpiner';
@@ -11,16 +11,17 @@ import { AppPublicidad } from '../../components/AppPublicidad';
 import { CardProduct } from '../../components/CardProduct';
 import { TextSmall } from '../../components/TextSmall';
 import { AppContainer } from '../../components/AppContainer';
-import { AppButton } from '../../components/AppButton';
 
 export default function Index() {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    getLatestProducts().then((products) => {
-      setProducts(products);
-    });
+		async function load() {
+			const prods = await getProducts();
+			setProducts(prods);
+		}
+		load();
   }, []);
 
   // Filtrado por nombre

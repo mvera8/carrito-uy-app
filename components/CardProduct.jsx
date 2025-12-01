@@ -1,6 +1,7 @@
 import { StyleSheet, TouchableOpacity, Image, View } from "react-native";
 import { TextSmall } from "./TextSmall";
 import { TextTitle } from "./TextTitle";
+import { getImage } from "../lib/getImage";
 import useTheme from "../hooks/useTheme";
 
 export function CardProduct({
@@ -44,7 +45,7 @@ export function CardProduct({
       <Image
         alt={product.name}
         style={styles.image}
-        source={product.image || require('../assets/products/image_cart.png')}
+				source={getImage(product.image)}
       />
       <View style={styles.textContainer}>
         <TextTitle numberOfLines={2}>{product.name}</TextTitle>

@@ -89,6 +89,6 @@ describe('Scraper de Productos', function() {
   }); // forEach
 
   after(() => {
-    cy.task('writeFinalJson');
+    cy.task('writeNeonTable');
   });
 }); // describe

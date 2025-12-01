@@ -44,12 +44,13 @@ https://staple.ltd/blogs/blog/best-free-sans-google-fonts-2021
 Tareas:
 usecallback para hacer cosas al ingresar a producto o scanear
 componetns import 1 file, 1 line
+DB - uardar datos del escaneo, si esta o no el producto
+cdn, cdn cache, cdn backup
 
-cdn
 zustand - guardar getting started page
 productos buscados home
 imagenes? - https://www.thiings.co/things/puffed-rice-snack
-gDB - uardar datos del escaneo, si esta o no el producto
+
 font: Inter?
 quick actions
 browser en el sitio?
@@ -63,3 +64,13 @@ categorias, filtrar en home page
 
 Tipo: ean13
 Datos: 7730132001417
+
+
+----
+
+estoy creando una aplicacion con react native y expo donde muestro y comparo los precios de los productos de distintos supermercados de mi país Uruguay.
+ahi hago un scrapping de productos y los guardo en un json, pero quiero subir estos productos a un cdn o a una base de datos.
+Necesito que me recomiendes algo gratis para empezar, ya me habias dicho un cdn pero no me acuerdo, y recomendame alguna base de datos como convex, supabase o firebase.
+algo facil de integrar pero poderoso para mostrar miles de productos.
+tambien voy a necesitar algo para guardar los escaneos de los productos que no tengo registrados, pero eso lo podemos ver despues pero estaria bueno usar solo un stack de DB.
+

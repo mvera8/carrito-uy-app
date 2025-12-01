@@ -1,8 +1,13 @@
 import { defineConfig } from "cypress";
+import { neon } from '@neondatabase/serverless';
 import fs from "fs";
 import path from "path";
 import puppeteerExtra from "puppeteer-extra";
 import stealth from "puppeteer-extra-plugin-stealth";
+import dotenv from "dotenv";
+
+// ✅ Cargar variables de entorno
+dotenv.config();
 
 puppeteerExtra.use(stealth());
 
@@ -21,27 +26,90 @@ const defaultHeaders = {
 
 export default defineConfig({
   e2e: {
+    env: {
+      // Pasar la variable al entorno de Cypress
+      DATABASE_URL: process.env.EXPO_PUBLIC_DATABASE_URL,
+    },
     setupNodeEvents(on, config) {
       let allProducts = [];
 
       on("task", {
-
         log(message) {
           console.log(message);
           return null;
         },
-
         saveProductData(product) {
           allProducts.push(product);
           return null;
         },
-
         writeFinalJson() {
           const outputPath = path.resolve("./cypress-prices.json");
           fs.writeFileSync(outputPath, JSON.stringify(allProducts, null, 2));
           return null;
         },
+        async writeNeonTable() {
+          try {
+            // ✅ Leer desde múltiples fuentes
+            const dbUrl =
+              process.env.EXPO_PUBLIC_DATABASE_URL ||
+              process.env.DATABASE_URL ||
+              config.env.DATABASE_URL;
 
+            if (!dbUrl) {
+              console.error("Variables disponibles:", Object.keys(process.env).filter(k => k.includes('DATABASE')));
+              throw new Error("No se encontró DATABASE_URL en ninguna fuente");
+            }
+
+            if (allProducts.length === 0) {
+              console.warn("⚠️ No hay productos para insertar");
+              return null;
+            }
+
+            console.log(`📦 Procesando ${allProducts.length} productos...`);
+
+            const sql = neon(dbUrl);
+
+            // ✅ Vaciar tabla
+            await sql`TRUNCATE TABLE productos`;
+            console.log("✓ Tabla vaciada");
+
+            // ✅ Insertar en lote (más eficiente)
+            let inserted = 0;
+            for (const p of allProducts) {
+              try {
+                // Asegurarse de que prices sea un string JSON válido
+                const pricesJson = typeof p.prices === 'string'
+                  ? p.prices
+                  : JSON.stringify(p.prices);
+
+                await sql`
+                  INSERT INTO productos (name, image, ean13, prices)
+                  VALUES (
+                    ${p.name || null}, 
+                    ${p.image || null}, 
+                    ${p.ean13 || null}, 
+                    ${pricesJson}::jsonb
+                  )
+                `;
+                inserted++;
+
+                if (inserted % 10 === 0) {
+                  console.log(`  → ${inserted}/${allProducts.length} insertados...`);
+                }
+              } catch (err) {
+                console.error(`❌ Error insertando producto ${p.name}:`, err.message);
+                // Continuar con el siguiente producto
+              }
+            }
+
+            console.log(`✅ Insertados ${inserted} productos en Neon`);
+            return { success: true, inserted };
+
+          } catch (err) {
+            console.error("❌ Error en writeNeonTable:", err);
+            throw err; // Cypress necesita que se lance el error para detectar fallos
+          }
+        },
         async puppeteerScrape({ url, selector }) {
           const browser = await puppeteerExtra.launch({
             headless: true,
@@ -135,7 +203,7 @@ export default defineConfig({
           } finally {
             await browser.close();
           }
-        }
+        },
 
       });
 
