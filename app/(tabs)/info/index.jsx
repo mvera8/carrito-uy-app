@@ -1,13 +1,9 @@
 // app/(tabs)/info/index.jsx
 import { FlatList } from "react-native";
 import { router } from "expo-router";
-import { AppSection } from "../../../components/AppSection";
-import { MenuButton } from "../../../components/MenuButton";
-import { AppHeader } from "../../../components/AppHeader";
-import { MenuSwitch } from "../../../components/MenuSwitch";
+import { AppSection, AppHeader, AppContainer, MenuSwitch, MenuButton } from "../../../components";
 import useTheme from "../../../hooks/useTheme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AppContainer } from "../../../components/AppContainer";
 
 const menu = [
   { label: "Ayuda", icon: "chatbubble", link: "/info/help" },

@@ -2,12 +2,7 @@
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { AppButton } from "../components/AppButton";
-import { AppIcon } from "../components/AppIcon";
-import { AppSection } from "../components/AppSection";
-import { TextSmall } from "../components/TextSmall";
-import { AppContainer } from "../components/AppContainer";
-import { TextTitle } from "../components/TextTitle";
+import { AppButton, AppIcon, AppSection, TextSmall, AppContainer, TextTitle } from '../components';
 import useTheme from "../hooks/useTheme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

@@ -1,29 +1,11 @@
-import { useState, useMemo, useCallback } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-} from "react-native";
-import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
-import { SupermarketCard } from "../components/SupermarketCard";
+import { useState, useMemo } from "react";
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCart } from "../hooks/useCart";
 import { SUPERMARKETS } from "../data/supermarkets";
-import { AppButton } from "../components/AppButton";
-import { AppIcon } from "../components/AppIcon";
-import { AppDrawer } from "../components/AppDrawer";
-import { AppSection } from "../components/AppSection";
-import { AppHeader } from "../components/AppHeader";
-import { findProduct } from "../lib/getProducts";
-import { TextTitle } from "../components/TextTitle";
-import { AppPublicidad } from "../components/AppPublicidad";
-import { TextSmall } from "../components/TextSmall";
-import { AppFixedBottom } from "../components/AppFixedBottom";
-import { AppContainer } from "../components/AppContainer";
-import useTheme from "../hooks/useTheme";
+import { SupermarketCard, AppButton, AppHeader, AppIcon, AppDrawer, AppSection, AppPublicidad, TextSmall, AppContainer, TextTitle, AppFixedBottom } from '../components';
 import { getImage } from "../lib/getImage";
+import useTheme from "../hooks/useTheme";
 
 export default function Product() {
   const router = useRouter();
@@ -54,15 +36,11 @@ export default function Product() {
 
   // ------------------ CART ------------------
   const { addToCart } = useCart();
-
   const [quantity, setQuantity] = useState(1);
   const [showDrawer, setShowDrawer] = useState(false);
 
   // ------------------ FIND PRODUCT ------------------
-  const product = productQuery;
-
-
-  if (!product) {
+  if (!productQuery) {
     return (
       <AppSection>
 				<AppHeader 
@@ -78,9 +56,9 @@ export default function Product() {
 
   // ------------------ MARKETS ------------------
 	const computedMarkets = useMemo(() => {
-		if (!product.prices || !Array.isArray(product.prices)) return [];
+		if (!productQuery.prices || !Array.isArray(productQuery.prices)) return [];
 
-		return product.prices
+		return productQuery.prices
 			.filter((p) => p.precio && !isNaN(Number(p.precio)))
 			.map((p) => {
 				const supermarket = SUPERMARKETS.find(
@@ -100,7 +78,7 @@ export default function Product() {
 				};
 			})
 			.sort((a, b) => a.finalPrice - b.finalPrice);
-	}, [product]);
+	}, [productQuery]);
 
   const maxPrice = useMemo(() => {
     return Math.max(...computedMarkets.map((b) => b.finalPrice));
@@ -110,10 +88,10 @@ export default function Product() {
   const handleAddToCart = () => {
     addToCart(
       {
-        id: product.id,
-        name: product.name,
-        image: product.image,
-        prices: product.prices,
+        id: productQuery.id,
+        name: productQuery.name,
+        image: productQuery.image,
+        prices: productQuery.prices,
       },
       quantity
     );
@@ -138,9 +116,9 @@ export default function Product() {
 				showBackButton={true}
 			/>
 			<Image
-				alt={product.name}
+				alt={productQuery.name}
 				style={styles.image}
-				source={getImage(product.image)}
+				source={getImage(productQuery.image)}
 			/>
 		</View>
     <AppSection style={{ paddingTop: 20 }}>
@@ -154,7 +132,7 @@ export default function Product() {
 						gap: 10,
           }}
         >
-					<TextTitle style={{ flex: 1 }}>{product.name}</TextTitle>
+					<TextTitle style={{ flex: 1 }}>{productQuery.name}</TextTitle>
 
           <View
             style={{
@@ -262,9 +240,9 @@ export default function Product() {
       <AppDrawer visible={showDrawer} onClose={() => setShowDrawer(false)}>
         <View style={{ alignItems: "center", marginBottom: 24, gap: 10 }}>
           <AppIcon icon="checkmark" />
-					<TextTitle>Producto agregado</TextTitle>
+					<TextTitle>producto agregado</TextTitle>
           <Text style={{ fontSize: 14, color: "#666" }}>
-            {quantity} x {product.name}
+            {quantity} x {productQuery.name}
           </Text>
         </View>
 
