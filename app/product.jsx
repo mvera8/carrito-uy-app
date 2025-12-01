@@ -1,3 +1,4 @@
+import { useState, useMemo, useCallback } from "react";
 import {
   View,
   Text,
@@ -6,8 +7,7 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import { useState, useMemo } from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { SupermarketCard } from "../components/SupermarketCard";
 import { useCart } from "../hooks/useCart";
 import { SUPERMARKETS } from "../data/supermarkets";
@@ -127,6 +127,12 @@ export default function Product() {
     setShowDrawer(false);
     router.push("/cart");
   };
+
+	useFocusEffect(
+		useCallback(() => { 
+			console.log('productName', product.name);
+		}, [])
+	);
 
   return (
 		<>

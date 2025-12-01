@@ -42,12 +42,17 @@ LOGO:
 https://staple.ltd/blogs/blog/best-free-sans-google-fonts-2021
 
 Tareas:
+usecallback para hacer cosas al ingresar a producto o scanear
+componetns import 1 file, 1 line
+
+cdn
 zustand - guardar getting started page
 productos buscados home
 imagenes? - https://www.thiings.co/things/puffed-rice-snack
-guardar datos del escaneo, si esta o no el producto
+gDB - uardar datos del escaneo, si esta o no el producto
 font: Inter?
 quick actions
+browser en el sitio?
 
 Despues:
 categorias, filtrar en home page
