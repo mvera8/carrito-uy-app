@@ -9,10 +9,8 @@ rm -rf node_modules
 rm package-lock.json
 npm install
 
-
-https://www.unistyl.es/v3/start/introduction?plugin_version=chrome_4.0.13
-
-https://gluestack.io/ui/docs/components/all-components
+Table: 
+https://console.neon.tech/app/projects/square-shadow-85253999/branches/br-frosty-moon-a4cxq2x9/tables?database=neondb
 
 Ref code:
 https://www.youtube.com/watch?v=U23lNFm_J70
@@ -26,15 +24,6 @@ https://react-svgr.com/
 ICons:
 https://www.streamlinehq.com/icons/flex-flat-style?icon=ico_uEcy8ALYJSIJrlwj
 
-Supermercados:
-https://www.tata.com.uy/
-https://www.tiendainglesa.com.uy/
-https://www.eldorado.com.uy/
-https://www.devoto.com.uy/
-https://www.geant.com.uy/
-https://www.disco.com.uy/
-https://www.elclon.com.uy/
-
 AI:
 https://chatgpt.com/c/69206993-037c-8328-8510-84378ecba0c8
 
@@ -46,6 +35,7 @@ usecallback para hacer cosas al ingresar a producto o scanear
 componetns import 1 file, 1 line
 DB - uardar datos del escaneo, si esta o no el producto
 cdn, cdn cache, cdn backup
+product abrir drawer y editar carrito
 
 zustand - guardar getting started page
 productos buscados home

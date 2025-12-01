@@ -56,7 +56,7 @@ export default function Index() {
 								data={filtered}
 								keyExtractor={(item) => item.id}
 								renderItem={({ item }) => {
-									const pricesList = Object.values(item.prices).map(p => p.price);
+									const pricesList = item.prices?.map(p => Number(p.precio)) || [];
 									const minPrice =
 										pricesList.length > 0
 											? Math.min(...pricesList)

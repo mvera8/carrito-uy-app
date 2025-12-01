@@ -1,7 +1,7 @@
 [
 	{
 		"name": "Arroz Blanco SAMAN 1kg",
-		"image": "image_rice.png",
+		"image": "image_rice",
 		"urls": [
 			"https://www.tata.com.uy/arroz-blanco-saman-1-kg-299/p",
 			"https://www.devoto.com.uy/arroz-blanco-saman-1-kg-523035/p",
@@ -13,7 +13,7 @@
 	},
 	{
 		"name": "Refresco PEPSI Black 2 L",
-		"image": "image_pepsi.png",
+		"image": "image_pepsi",
 		"ean13": "7734284002315",
 		"urls": [
 			"https://www.tata.com.uy/pepsi-black-pet-2-l-155064/p",

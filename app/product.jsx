@@ -23,6 +23,7 @@ import { TextSmall } from "../components/TextSmall";
 import { AppFixedBottom } from "../components/AppFixedBottom";
 import { AppContainer } from "../components/AppContainer";
 import useTheme from "../hooks/useTheme";
+import { getImage } from "../lib/getImage";
 
 export default function Product() {
   const router = useRouter();
@@ -58,9 +59,8 @@ export default function Product() {
   const [showDrawer, setShowDrawer] = useState(false);
 
   // ------------------ FIND PRODUCT ------------------
-  const product = useMemo(() => {
-    return findProduct(productQuery);
-  }, [productQuery]);
+  const product = productQuery;
+
 
   if (!product) {
     return (
@@ -77,27 +77,30 @@ export default function Product() {
   }
 
   // ------------------ MARKETS ------------------
-  const computedMarkets = useMemo(() => {
-    return Object.entries(product.prices)
-      .filter(([_, priceData]) => priceData && priceData.price && !isNaN(priceData.price))
-      .map(([market, priceData]) => {
-        const supermarket = SUPERMARKETS.find(
-          (s) =>
-            s.id === market ||
-            s.name.toLowerCase() === market.toLowerCase()
-        );
+	const computedMarkets = useMemo(() => {
+		if (!product.prices || !Array.isArray(product.prices)) return [];
 
-        return {
-          market,
-          price: Number(priceData.price),
-          finalPrice: Number(priceData.price),
-          listPrice: priceData.listPrice,
-          promo: priceData.promo,
-          supermarket,
-        };
-      })
-      .sort((a, b) => a.finalPrice - b.finalPrice);
-  }, [product]);
+		return product.prices
+			.filter((p) => p.precio && !isNaN(Number(p.precio)))
+			.map((p) => {
+				const supermarket = SUPERMARKETS.find(
+					(s) =>
+						s.id === p.tienda ||
+						s.name.toLowerCase() === p.tienda.toLowerCase()
+				);
+
+				return {
+					market: p.tienda,           // antes venía de Object.entries
+					price: Number(p.precio),
+					finalPrice: Number(p.precio),
+					listPrice: p.listPrice || null,
+					promo: p.promo || null,
+					url: p.url,
+					supermarket,
+				};
+			})
+			.sort((a, b) => a.finalPrice - b.finalPrice);
+	}, [product]);
 
   const maxPrice = useMemo(() => {
     return Math.max(...computedMarkets.map((b) => b.finalPrice));
@@ -128,12 +131,6 @@ export default function Product() {
     router.push("/cart");
   };
 
-	useFocusEffect(
-		useCallback(() => { 
-			console.log('productName', product.name);
-		}, [])
-	);
-
   return (
 		<>
 		<View style={styles.imageContainer}>
@@ -143,7 +140,7 @@ export default function Product() {
 			<Image
 				alt={product.name}
 				style={styles.image}
-				source={product.image || require('../assets/products/image_cart.png')}
+				source={getImage(product.image)}
 			/>
 		</View>
     <AppSection style={{ paddingTop: 20 }}>
