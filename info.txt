@@ -21,6 +21,8 @@ Logos:
 https://logoteca.uy/
 https://react-svgr.com/
 
+imagenes? - https://www.thiings.co/things/puffed-rice-snack
+
 ICons:
 https://www.streamlinehq.com/icons/flex-flat-style?icon=ico_uEcy8ALYJSIJrlwj
 
@@ -30,16 +32,17 @@ https://chatgpt.com/c/69206993-037c-8328-8510-84378ecba0c8
 LOGO:
 https://staple.ltd/blogs/blog/best-free-sans-google-fonts-2021
 
-Tareas:
+MVP:
 usecallback para hacer cosas al ingresar a producto o scanear
-componetns import 1 file, 1 line
 DB - uardar datos del escaneo, si esta o no el producto
 cdn, cdn cache, cdn backup
 product abrir drawer y editar carrito
+enviroment variables
+code variables
 
+Ver:
 zustand - guardar getting started page
 productos buscados home
-imagenes? - https://www.thiings.co/things/puffed-rice-snack
 
 font: Inter?
 quick actions
@@ -47,7 +50,7 @@ browser en el sitio?
 
 Despues:
 categorias, filtrar en home page
-
+tener historial de precio
 
 ----
 

@@ -7,7 +7,7 @@ describe('Scraper de Productos', function() {
 
   getProducts().forEach((product) => {
     const productName = product.name;
-    const productImage = product.image ?? 'image_cart.png';
+    const productImage = product.image ?? 'image_cart';
     const productCode = product.ean13 ?? '';
     const productUrls = product.urls ?? [];
 
@@ -21,6 +21,10 @@ describe('Scraper de Productos', function() {
     context(`Producto: ${productName}`, function () {
       productUrls.forEach(function (url) {
         it(url, function () {
+          if (url === '') {
+            this.skip();
+          }
+
           cy.request({
             url: url,
             failOnStatusCode: false,

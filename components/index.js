@@ -6,6 +6,7 @@ export { AppFixedBottom } from './AppFixedBottom';
 export { AppHeader } from './AppHeader';
 export { AppIcon } from './AppIcon';
 export { AppInput } from './AppInput';
+export { AppModal } from './AppModal';
 export { AppPublicidad } from './AppPublicidad';
 export { AppSection } from './AppSection';
 export { AppSpiner } from './AppSpiner';

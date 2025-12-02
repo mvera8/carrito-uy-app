@@ -19,6 +19,7 @@ export default function Info() {
 	async function handleReload() {
     try {
       await AsyncStorage.removeItem("@onboarding_completed");
+			await AsyncStorage.removeItem("products_cache");
       // Opcional: reiniciar la app o navegar al inicio
       router.replace("/");
     } catch (error) {

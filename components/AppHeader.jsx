@@ -48,7 +48,7 @@ export function AppHeader({
       <View style={styles.leftSection}>
         {showBackButton && (
           <TouchableOpacity onPress={handleBackPress} style={styles.button}>
-            <AppIcon icon="arrow-back" variant="transparent" />
+            <AppIcon icon="arrow-back" variant="light" />
           </TouchableOpacity>
         )}
       </View>
@@ -64,7 +64,7 @@ export function AppHeader({
       <View style={styles.rightSection}>
         {rightIcon && (
           <TouchableOpacity onPress={onRightPress} style={styles.button}>
-            {rightIcon}
+						<AppIcon icon={rightIcon} variant="lightDark" />
           </TouchableOpacity>
         )}
       </View>
