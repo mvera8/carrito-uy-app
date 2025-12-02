@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useCart } from '../../hooks/useCart';
-import { AppButton } from '../../components/AppButton';
-import { getAllMarkets, getProductPrice } from '../../lib/getProducts';
-import { AppDrawer } from '../../components/AppDrawer';
-import { AppSection } from '../../components/AppSection';
-import { AppPublicidad } from '../../components/AppPublicidad';
-import { TextSmall } from '../../components/TextSmall';
-import { AppContainer } from '../../components/AppContainer';
+import { getProductPrice } from '../../lib/getProducts';
+import { AppButton, AppDrawer, AppSection, AppPublicidad, TextSmall, AppContainer } from '../../components';
+import { SUPERMARKETS } from "../../data/supermarkets";
+
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity } = useCart();
@@ -15,14 +12,14 @@ export default function Cart() {
   const [showDrawer, setShowDrawer] = useState(false);
 
   // --- LÓGICA DEL CARRITO ---
-  const markets = getAllMarkets();
+  const markets = SUPERMARKETS.map(s => s.id);
 
   const totals = markets.map((market) => {
     let total = 0;
     let missing = false;
 
     cart.forEach((product) => {
-      const price = getProductPrice(product.id, market);
+      const price = getProductPrice(product, market);
 
       if (price === null || price === undefined || isNaN(price)) {
         missing = true;

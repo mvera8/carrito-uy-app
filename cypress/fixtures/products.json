@@ -1,27 +1,178 @@
 [
 	{
 		"name": "Arroz Blanco SAMAN 1kg",
-		"image": "image_rice.png",
+		"image": "image_rice",
 		"urls": [
 			"https://www.tata.com.uy/arroz-blanco-saman-1-kg-299/p",
-			"https://www.devoto.com.uy/arroz-blanco-saman-1-kg-523035/p",
-			"https://www.disco.com.uy/arroz-blanco-saman-1-kg-523035/p",
-			"https://www.geant.com.uy/arroz-blanco-saman-1-kg-523035/p",
 			"https://www.tiendainglesa.com.uy/supermercado/arroz-blanco-saman-1-kg.producto?3451",
+			"https://www.devoto.com.uy/arroz-blanco-saman-1-kg-523035/p",
+			"https://www.geant.com.uy/arroz-blanco-saman-1-kg-523035/p",
+			"https://www.disco.com.uy/arroz-blanco-saman-1-kg-523035/p",
 			"https://www.elclon.com.uy/catalogo/arroz-saman-blanco-1k-bolsa-roja_83724_0"
 		]
 	},
 	{
+		"name": "Arroz Blanco SAMAN 5kg",
+		"image": "image_rice",
+		"urls": [
+			"https://www.tata.com.uy/arroz-blanco-saman-5-kg-3447/p",
+			"https://www.geant.com.uy/arroz-blanco-saman-5-kg-523099/p",
+			"https://www.disco.com.uy/arroz-blanco-saman-5-kg-523099/p",
+			"https://www.elclon.com.uy/catalogo/arroz-saman-blanco-5k-bolsa-roja_63281_0"
+		]
+	},
+	{
+		"name": "Coca-Cola Original 1.5l",
+		"image": "image_coke",
+		"urls": [
+			"https://www.tata.com.uy/coca-cola-original-1-5l-212/p",
+			"https://www.eldorado.com.uy/refresco-coca-cola-descartable-1-5-l/p",
+			"https://www.devoto.com.uy/refresco-coca-cola-1-5-l-descartable-591225/p",
+			"https://www.tiendainglesa.com.uy/supermercado/coca-cola-original-1.5-l.producto?6012",
+			"https://www.geant.com.uy/refresco-coca-cola-1-5-l-descartable-591225/p",
+			"https://www.disco.com.uy/refresco-coca-cola-1-5-l-descartable-591225/p"
+		]
+	},
+	{
+		"name": "Frankfurters Cortos SCHNECK 8 Unidades",
+		"image": "image_hotdog",
+		"urls": [
+			"https://www.tata.com.uy/frankfurters-cortos-schneck-8-u---mostaza-25-g-852/p",
+			"https://www.tiendainglesa.com.uy/supermercado/frankfurters-cortos-vacio-schneck-x-8-unidades.producto?412331",
+			"https://www.eldorado.com.uy/panchos-schneck-1-4kg-al-vacio/p",
+			"https://www.devoto.com.uy/frankfurters-cortos-schneck-8-un-330-g-331615/p",
+			"https://www.geant.com.uy/frankfurters-cortos-schneck-8-un-330-g-331615/p",
+			"https://www.disco.com.uy/frankfurters-cortos-schneck-8-un-330-g-331615/p"
+		]
+	},
+	{
+		"name": "Galletas Bañadas Oreo Chocolate 119g",
+		"image": "image_oreo",
+		"urls": [
+			"https://www.tata.com.uy/galletas-ba%C3%B1ada-oreo-chocolate-119-g-780/p",
+			"https://www.tiendainglesa.com.uy/supermercado/galleta-oreo-banada-119g.producto?404890",
+			"https://www.devoto.com.uy/galletitas-oreo-banadas-chocolate-119-g-662155/p",
+			"https://www.geant.com.uy/galletitas-oreo-banadas-chocolate-119-g-662155/p",
+			"https://www.disco.com.uy/galletitas-oreo-banadas-chocolate-119-g-662155/p"
+		]
+	},
+	{
+		"name": "Huevo colorados PRODHIN 15un",
+		"image": "image_egg",
+		"urls": [
+			"https://www.tiendainglesa.com.uy/supermercado/pack-huevos-colorados-prodhin-x-15-unidades.producto?5038",
+			"https://www.tata.com.uy/huevo-marron-prodhin-x15-2719/p",
+			"https://www.eldorado.com.uy/huevos-prodhin-marron-15un/p",
+			"https://www.devoto.com.uy/huevo-color-prodhin-15-un-220002/p",
+			"https://www.geant.com.uy/huevo-color-prodhin-15-un-220002/p",
+			"https://www.disco.com.uy/huevo-color-prodhin-15-un-220002/p"
+		]
+	},
+	{
+		"name": "Lecha Descremada CONAPROLE 1l",
+		"image": "image_milk",
+		"urls": [
+			"https://www.disco.com.uy/leche-fresca-descremada-conaprole-sachet-1-l-240510/p",
+			"https://www.geant.com.uy/leche-fresca-descremada-conaprole-sachet-1-l-240510/p",
+			"https://www.devoto.com.uy/leche-fresca-descremada-conaprole-sachet-1-l-240510/p",
+			"https://www.eldorado.com.uy/leche-conaprole-descremada-1lt/p",
+			"https://www.tiendainglesa.com.uy/supermercado/leche-conaprole-fresca-descremada-sachet-1l.producto?23152",
+			"https://www.tata.com.uy/leche-fresca-descremada-conaprole-sachet-1-l-1281/p"
+		]
+	},
+	{
+		"name": "Mayonesa Uruguay 500cc",
+		"image": "image_mayonnaise",
+		"ean13": "7730132000779",
+		"urls": [
+			"https://www.tiendainglesa.com.uy/supermercado/mayonesa-uruguay-500-cc.producto?377978",
+			"https://www.eldorado.com.uy/mayonesa-uruguay-500gr/p"
+		]
+	},
+	{
+		"name": "Mayonesa Uruguay 1Kg",
+		"ean13": "7730132001417",
+		"image": "image_mayonnaise",
+		"urls": [
+			"https://www.eldorado.com.uy/mayonesa-uruguay-1kg/p",
+			""
+		]
+	},
+	{
+		"name": "Pan lacteado BIMBO",
+		"image": "image_bread",
+		"urls": [
+			"https://www.disco.com.uy/pan-lacteado-bimbo-400-g-602554/p",
+			"https://www.geant.com.uy/pan-lacteado-bimbo-400-g-602554/p",
+			"https://www.devoto.com.uy/pan-lacteado-bimbo-400-g-602554/p",
+			"https://www.eldorado.com.uy/pan-bimbo-lacteado-mediano-400gr/p",
+			"https://www.tiendainglesa.com.uy/supermercado/pan-lacteado-mediano-bimbo-360-gr.producto?330166",
+			"https://www.tata.com.uy/pan-lacteado-bimbo-360-g-821/p"
+		]
+	},
+	{
+		"name": "Pan Viena LOS SORCHANTES 8un",
+		"image": "image_bread2",
+		"urls": [
+			"https://www.tata.com.uy/pan-viena-los-sorchantes-180-g-828/p",
+			"https://www.tiendainglesa.com.uy/supermercado/pan-de-viena-los-sorchantes-8-unidades-180-gr.producto?4545",
+			"https://www.eldorado.com.uy/pan-de-viena-los-sorchantes-8un/p",
+			"https://www.devoto.com.uy/pan-viena-los-sorchantes-8-un-210-g-602385/p",
+			"https://www.geant.com.uy/pan-viena-los-sorchantes-8-un-210-g-602385/p",
+			"https://www.disco.com.uy/pan-viena-los-sorchantes-8-un-210-g-602385/p"
+		]
+	},
+	{
+		"name": "Refresco PEPSI Cola 500 ml",
+		"image": "image_pepsi",
+		"urls": [
+			"https://www.tata.com.uy/refresco-cola-pepsi-botella-500-ml-207/p",
+			"https://www.tiendainglesa.com.uy/supermercado/refresco-pepsi-cola-500-ml.producto?138",
+			"https://www.eldorado.com.uy/refresco-pepsi-500cc/p",
+			"https://www.devoto.com.uy/refresco-pepsi-500-ml-592094/p",
+			"https://www.geant.com.uy/refresco-pepsi-500-ml-592094/p",
+			"https://www.disco.com.uy/refresco-pepsi-500-ml-592094/p"
+		]
+	},
+	{
 		"name": "Refresco PEPSI Black 2 L",
-		"image": "image_pepsi.png",
+		"image": "image_pepsi",
 		"ean13": "7734284002315",
 		"urls": [
 			"https://www.tata.com.uy/pepsi-black-pet-2-l-155064/p",
-			"https://www.devoto.com.uy/refresco-pepsi-black-2-l-590886/p",
-			"https://www.disco.com.uy/refresco-pepsi-black-2-l-590886/p",
-			"https://www.geant.com.uy/refresco-pepsi-black-2-l-590886/p",
 			"https://www.tiendainglesa.com.uy/supermercado/refresco-pepsi-black-2-l.producto?1543148",
-			"https://www.eldorado.com.uy/refresco-pepsi-black-2lt/p"
+			"https://www.eldorado.com.uy/refresco-pepsi-black-2lt/p",
+			"https://www.devoto.com.uy/refresco-pepsi-black-2-l-590886/p",
+			"https://www.geant.com.uy/refresco-pepsi-black-2-l-590886/p",
+			"https://www.disco.com.uy/refresco-pepsi-black-2-l-590886/p"
+		]
+	},
+	{
+		"name": "Repelente para Mosquitos OFF! Extra Duración Aerosol 290cc",
+		"urls": [
+			"https://www.tiendainglesa.com.uy/supermercado/repelente-para-mosquitos-off-extra-duracion-aerosol-290-cc.producto?407563",
+			"https://www.eldorado.com.uy/repelente-off-extra-duracion-bonus-aerosol-290ml/p",
+			"https://www.devoto.com.uy/repelente-off-extra-duracion-290-ml-344231/p",
+			"https://www.tata.com.uy/repelente-off-aerosol-bonus-extra-duracion-290ml-163796/p",
+			"https://www.geant.com.uy/repelente-off-extra-duracion-290-ml-344231/p"
+		]
+	},
+	{
+		"name": "Suprema de Pollo 1Kg",
+		"image": "image_chicken",
+		"notes": "obtener por kilo",
+		"urls": [
+			"https://www.tiendainglesa.com.uy/supermercado/suprema-de-pollo-avicolas-del-oeste-kg.producto?1970",
+			"https://www.devoto.com.uy/suprema-avicola-del-oeste-315221/p",
+			"https://www.geant.com.uy/suprema-avicola-del-oeste-315221/p",
+			"https://www.disco.com.uy/suprema-avicola-del-oeste-315221/p"
+		]
+	},
+	{
+		"name": "Yerba CANARIAS Edición Especial 1kg",
+		"urls": [
+			"https://www.tiendainglesa.com.uy/supermercado/yerba-canarias-edicion-especial-1kg.producto?217077",
+			"https://www.elclon.com.uy/catalogo/yerba-canarias-edicion-especial-1k_19929_0"
 		]
 	}
 ]

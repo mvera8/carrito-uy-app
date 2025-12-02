@@ -15,6 +15,16 @@ export function AppIcon({
           backgroundColor: "black",
 					textColor: "white"
         };
+			case "light":
+        return {
+          backgroundColor: "white",
+					textColor: "black"
+        };
+			case "lightDark":
+        return {
+          backgroundColor: "rgba(255, 255, 255, 0.4)",
+					textColor: "black"
+        };
       case "transparent":
         return {
           backgroundColor: "transparent",

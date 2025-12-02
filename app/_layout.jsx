@@ -6,7 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable } from "react-native";
-import { AppIcon } from "../components/AppIcon";
+import { AppIcon } from "../components";
 import useTheme, { ThemeProvider } from "../hooks/useTheme";
 
 export default function RootLayout() {

@@ -1,10 +1,7 @@
 
 import { useState } from 'react';
 import { Text } from 'react-native'
-import { AppSection } from '../../components/AppSection';
-import { AppPublicidad } from '../../components/AppPublicidad';
-import { TextSmall } from '../../components/TextSmall';
-import { AppContainer } from '../../components/AppContainer';
+import { AppSection, AppPublicidad, TextSmall, AppContainer } from '../../components';
 
 export default function Lists() {
 	const [lists, setLists] = useState([]);

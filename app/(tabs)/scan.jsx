@@ -2,15 +2,9 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
-import { AppSection } from '../../components/AppSection';
-import { AppButton } from '../../components/AppButton';
-import { AppSpiner } from '../../components/AppSpiner';
-import { AppPublicidad } from '../../components/AppPublicidad';
-import { CardProduct } from '../../components/CardProduct';
-import { TextTitle } from '../../components/TextTitle';
-import useTheme from '../../hooks/useTheme';
+import { AppSection, AppPublicidad, AppContainer, TextTitle, CardProduct, AppSpiner, AppButton } from '../../components';
 import { getLatestProducts } from '../../lib/getProducts';
-import { AppContainer } from '../../components/AppContainer';
+import useTheme from '../../hooks/useTheme';
 
 const scan = () => {
   const { colors } = useTheme();

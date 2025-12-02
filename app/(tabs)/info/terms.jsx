@@ -1,6 +1,5 @@
 import { Text } from "react-native";
-import { AppSection } from "../../../components/AppSection";
-import { AppHeader } from "../../../components/AppHeader";
+import { AppSection, AppHeader } from "../../../components";
 
 export default function Terms() {
   return (

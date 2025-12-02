@@ -2,25 +2,19 @@
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { router } from 'expo-router';
-import { getLatestProducts } from '../../lib/getProducts';
-import { AppInput } from '../../components/AppInput';
-import { AppHeader } from '../../components/AppHeader';
-import { AppSpiner } from '../../components/AppSpiner';
-import { AppSection } from '../../components/AppSection';
-import { AppPublicidad } from '../../components/AppPublicidad';
-import { CardProduct } from '../../components/CardProduct';
-import { TextSmall } from '../../components/TextSmall';
-import { AppContainer } from '../../components/AppContainer';
-import { AppButton } from '../../components/AppButton';
+import { getProducts } from '../../lib/getProducts';
+import { AppInput, AppHeader, AppSpiner, AppSection, AppPublicidad, CardProduct, TextSmall, AppContainer } from '../../components';
 
 export default function Index() {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    getLatestProducts().then((products) => {
-      setProducts(products);
-    });
+		async function load() {
+			const prods = await getProducts();
+			setProducts(prods);
+		}
+		load();
   }, []);
 
   // Filtrado por nombre
@@ -55,7 +49,7 @@ export default function Index() {
 								data={filtered}
 								keyExtractor={(item) => item.id}
 								renderItem={({ item }) => {
-									const pricesList = Object.values(item.prices).map(p => p.price);
+									const pricesList = item.prices?.map(p => Number(p.precio)) || [];
 									const minPrice =
 										pricesList.length > 0
 											? Math.min(...pricesList)

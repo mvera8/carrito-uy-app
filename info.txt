@@ -9,10 +9,8 @@ rm -rf node_modules
 rm package-lock.json
 npm install
 
-
-https://www.unistyl.es/v3/start/introduction?plugin_version=chrome_4.0.13
-
-https://gluestack.io/ui/docs/components/all-components
+Table: 
+https://console.neon.tech/app/projects/square-shadow-85253999/branches/br-frosty-moon-a4cxq2x9/tables?database=neondb
 
 Ref code:
 https://www.youtube.com/watch?v=U23lNFm_J70
@@ -23,17 +21,10 @@ Logos:
 https://logoteca.uy/
 https://react-svgr.com/
 
+imagenes? - https://www.thiings.co/things/puffed-rice-snack
+
 ICons:
 https://www.streamlinehq.com/icons/flex-flat-style?icon=ico_uEcy8ALYJSIJrlwj
-
-Supermercados:
-https://www.tata.com.uy/
-https://www.tiendainglesa.com.uy/
-https://www.eldorado.com.uy/
-https://www.devoto.com.uy/
-https://www.geant.com.uy/
-https://www.disco.com.uy/
-https://www.elclon.com.uy/
 
 AI:
 https://chatgpt.com/c/69206993-037c-8328-8510-84378ecba0c8
@@ -41,25 +32,38 @@ https://chatgpt.com/c/69206993-037c-8328-8510-84378ecba0c8
 LOGO:
 https://staple.ltd/blogs/blog/best-free-sans-google-fonts-2021
 
-Tareas:
+MVP:
 usecallback para hacer cosas al ingresar a producto o scanear
-componetns import 1 file, 1 line
+DB - uardar datos del escaneo, si esta o no el producto
+cdn, cdn cache, cdn backup
+product abrir drawer y editar carrito
+enviroment variables
+code variables
 
-cdn
+Ver:
 zustand - guardar getting started page
 productos buscados home
-imagenes? - https://www.thiings.co/things/puffed-rice-snack
-gDB - uardar datos del escaneo, si esta o no el producto
+
 font: Inter?
 quick actions
 browser en el sitio?
 
 Despues:
 categorias, filtrar en home page
-
+tener historial de precio
 
 ----
 
 
 Tipo: ean13
 Datos: 7730132001417
+
+
+----
+
+estoy creando una aplicacion con react native y expo donde muestro y comparo los precios de los productos de distintos supermercados de mi país Uruguay.
+ahi hago un scrapping de productos y los guardo en un json, pero quiero subir estos productos a un cdn o a una base de datos.
+Necesito que me recomiendes algo gratis para empezar, ya me habias dicho un cdn pero no me acuerdo, y recomendame alguna base de datos como convex, supabase o firebase.
+algo facil de integrar pero poderoso para mostrar miles de productos.
+tambien voy a necesitar algo para guardar los escaneos de los productos que no tengo registrados, pero eso lo podemos ver despues pero estaria bueno usar solo un stack de DB.
+
