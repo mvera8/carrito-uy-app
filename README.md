@@ -23,3 +23,4 @@ npx expo start
 ## run app sin cache
 
 npx expo start -c
+# playas-uy-app
