@@ -1,9 +1,10 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { AppSection, AppPublicidad, AppContainer, TextTitle, CardProduct, AppSpiner, AppButton } from '../../components';
-import { getLatestProducts } from '../../lib/getProducts';
+import { getProducts } from '../../lib/getProducts';
+import { neon } from '@neondatabase/serverless';
 import useTheme from '../../hooks/useTheme';
 
 const scan = () => {
@@ -14,6 +15,8 @@ const scan = () => {
   const [barcodeData, setBarcodeData] = useState(null);
   const [foundProduct, setFoundProduct] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [savedToDb, setSavedToDb] = useState(false);
+  const isProcessing = useRef(false);
 
   // Solicitar permiso cuando el componente se monta
   useEffect(() => {
@@ -33,24 +36,65 @@ const scan = () => {
         setScanned(false);
         setBarcodeData(null);
         setFoundProduct(null);
+        setSavedToDb(false);
+        isProcessing.current = false;
       };
     }, [])
   );
 
   const handleBarcodeScanned = async ({ type, data }) => {
+    // Prevenir escaneos múltiples usando ref (inmediato)
+    if (isProcessing.current) {
+      console.log('Ya se está procesando un escaneo, ignorando...');
+      return;
+    }
+    
+    isProcessing.current = true;
     setScanned(true);
     setBarcodeData({ type, data });
     setLoading(true);
+    setSavedToDb(false);
 
     try {
       // Obtener todos los productos
-      const products = await getLatestProducts();
+      const products = await getProducts();
       
       // Buscar producto que coincida con el código escaneado
       const product = products.find(p => p.ean13 === data);
       
       if (product) {
+        console.log('Producto encontrado!');
         setFoundProduct(product);
+      } else {
+        console.log('Producto NO encontrado - Guardando en BD...');
+
+        try {
+          const dbUrl = process.env.EXPO_PUBLIC_DATABASE_URL || process.env.DATABASE_URL;
+          
+          if (!dbUrl) {
+            console.error('Error: DATABASE_URL no configurada');
+            return;
+          }
+
+          const sql = neon(dbUrl);
+          
+          await sql`
+            INSERT INTO escaneos (ean13, type, status, created_at)
+            VALUES (
+              ${data}, 
+              ${type}, 
+              'not_created',
+              NOW()
+            )
+          `;
+          
+          console.log('Código guardado exitosamente en la base de datos');
+          setSavedToDb(true);
+          
+        } catch (dbError) {
+          console.error('Error al guardar en base de datos:', dbError);
+          // Continuar con la ejecución aunque falle el guardado
+        }
       }
     } catch (error) {
       console.error('Error buscando producto:', error);
@@ -70,6 +114,8 @@ const scan = () => {
     setScanned(false);
     setBarcodeData(null);
     setFoundProduct(null);
+    setSavedToDb(false);
+    isProcessing.current = false;
   };
 
   if (!permission) {
@@ -161,6 +207,13 @@ const scan = () => {
       textAlign: 'center',
       marginBottom: 20,
     },
+    savedText: {
+      color: colors.primary,
+      fontSize: 14,
+      textAlign: 'center',
+      marginTop: 10,
+      fontStyle: 'italic',
+    },
     deniedContainer: {
       flex: 1,
       justifyContent: 'center',
@@ -197,95 +250,101 @@ const scan = () => {
 
   return (
     <AppSection>
-			<AppContainer>
-				{scanned
-					? <>
-							{loading ? (
-								<AppSpiner />
-							) : foundProduct ? (
-								<>
-									<TextTitle>Producto encontrado</TextTitle>
+      <AppContainer>
+        {scanned
+          ? <>
+              {loading ? (
+                <AppSpiner />
+              ) : foundProduct ? (
+                <>
+                  <TextTitle>Producto encontrado</TextTitle>
 
-									<Text style={styles.resultText}>
-										<Text style={styles.label}>Código: </Text>
-										{barcodeData.data}
-									</Text>
+                  <Text style={styles.resultText}>
+                    <Text style={styles.label}>Código: </Text>
+                    {barcodeData.data}
+                  </Text>
 
-									<CardProduct
-										product={foundProduct}
-										minPrice={
-											Object.values(foundProduct.prices).length > 0
-												? Math.min(...Object.values(foundProduct.prices).map(p => p.price))
-												: "N/A"
-										}
-										pressFunction={() => handleSelectProduct(foundProduct)}
-									/>
+                  <CardProduct
+                    product={foundProduct}
+                    minPrice={
+                      Object.values(foundProduct.prices).length > 0
+                        ? Math.min(...Object.values(foundProduct.prices).map(p => p.price))
+                        : "N/A"
+                    }
+                    pressFunction={() => handleSelectProduct(foundProduct)}
+                  />
 
-									<AppButton
-										pressFunction={handleScanAgain}
-										text="Escanear otro producto"
-										variant="light"
-									/>
-								</>
-							) : (
-								<>
-									<View style={styles.resultContainer}>
-										<Text style={styles.resultTitle}>Código Escaneado</Text>
-										<Text style={styles.resultText}>
-											<Text style={styles.label}>Tipo: </Text>
-											{barcodeData.type}
-										</Text>
-										<Text style={styles.resultText}>
-											<Text style={styles.label}>Código: </Text>
-											{barcodeData.data}
-										</Text>
-									</View>
+                  <AppButton
+                    pressFunction={handleScanAgain}
+                    text="Escanear otro producto"
+                    variant="light"
+                  />
+                </>
+              ) : (
+                <>
+                  <View style={styles.resultContainer}>
+                    <Text style={styles.resultTitle}>Código Escaneado</Text>
+                    <Text style={styles.resultText}>
+                      <Text style={styles.label}>Tipo: </Text>
+                      {barcodeData.type}
+                    </Text>
+                    <Text style={styles.resultText}>
+                      <Text style={styles.label}>Código: </Text>
+                      {barcodeData.data}
+                    </Text>
+                  </View>
 
-									<Text style={styles.notFoundText}>
-										❌ Producto no encontrado en nuestra base de datos
-									</Text>
+                  <Text style={styles.notFoundText}>
+                    ❌ Producto no encontrado en nuestra base de datos
+                  </Text>
 
-									<AppButton
-										pressFunction={handleScanAgain}
-										text="Escanear de nuevo"
-										variant="light"
-									/>
-								</>
-							)}
-						</>
-					: <>
-							<AppPublicidad />
-							<CameraView
-								style={styles.camera}
-								facing='back'
-								onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
-								barcodeScannerSettings={{
-									barcodeTypes: [
-										'ean13',
-										'ean8',
-										'upc_a',
-										'upc_e',
-										'code128',
-										'code39',
-										'qr'
-									],
-								}}
-							>
-								<View style={styles.overlay}>
-									<View style={styles.scanFrame}>
-										<View style={[styles.corner, styles.cornerTopLeft]} />
-										<View style={[styles.corner, styles.cornerTopRight]} />
-										<View style={[styles.corner, styles.cornerBottomLeft]} />
-										<View style={[styles.corner, styles.cornerBottomRight]} />
-									</View>
-									<Text style={styles.instructionText}>
-										Centra el código de barras
-									</Text>
-								</View>
-							</CameraView>
-						</>
-				}
-			</AppContainer>
+                  {savedToDb && (
+                    <Text style={styles.savedText}>
+                      ℹ️ Código guardado para futuras referencias
+                    </Text>
+                  )}
+
+                  <AppButton
+                    pressFunction={handleScanAgain}
+                    text="Escanear de nuevo"
+                    variant="light"
+                  />
+                </>
+              )}
+            </>
+          : <>
+              <AppPublicidad />
+              <CameraView
+                style={styles.camera}
+                facing='back'
+                onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
+                barcodeScannerSettings={{
+                  barcodeTypes: [
+                    'ean13',
+                    'ean8',
+                    'upc_a',
+                    'upc_e',
+                    'code128',
+                    'code39',
+                    'qr'
+                  ],
+                }}
+              >
+                <View style={styles.overlay}>
+                  <View style={styles.scanFrame}>
+                    <View style={[styles.corner, styles.cornerTopLeft]} />
+                    <View style={[styles.corner, styles.cornerTopRight]} />
+                    <View style={[styles.corner, styles.cornerBottomLeft]} />
+                    <View style={[styles.corner, styles.cornerBottomRight]} />
+                  </View>
+                  <Text style={styles.instructionText}>
+                    Centra el código de barras
+                  </Text>
+                </View>
+              </CameraView>
+            </>
+        }
+      </AppContainer>
     </AppSection>
   );
 };

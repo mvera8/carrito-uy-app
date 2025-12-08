@@ -33,7 +33,6 @@ LOGO:
 https://staple.ltd/blogs/blog/best-free-sans-google-fonts-2021
 
 MVP:
-usecallback para hacer cosas al ingresar a producto o scanear
 DB - uardar datos del escaneo, si esta o no el producto
 cdn, cdn cache, cdn backup
 product abrir drawer y editar carrito
